@@ -1,28 +1,35 @@
-# WikiNodes
+# HoloWiki
 
-WikiNodes is a project designed to bring the fork/diff/merge topology popularized by git/hub into the space of private collaboration. A user may, for example, add their life's work to their WikiNodes running on their local Holochain, and privately share any nodes or collections with users or groups they select. Users can then fork each other's nodes, and merge in changes from other users' forks.
+HoloWiki is a project designed to bring the fork/diff/merge topology popularized by git/hub into the space of private collaboration. A user may, for example, add their life's work to their HoloWiki running on their local Holochain, and privately share any nodes or collections with users or groups they select. Users can then fork each other's nodes, and merge in changes from other users' forks.
 
 ## Features
 
 ### Creating Pages
 
 - Pages can be imported from other wikis, or uploaded from local files
-- Any creative commons (CC-BY-SA) licensed page from any existing site may be forked into, and modified within, WikiNodes
+- Any creative commons (CC-BY-SA) licensed page from any existing site may be forked into, and modified within, HoloWiki
 
-### Creating Collections
+### Collections
 
 - User can group pages into collections
 - Collections may differ across users and branches
+- A collection is technically a document (JSON or [NDJSON](http://ndjson.org/))
+- Collections can be forked and branched like other documents
+- Collections can contain other collections, to any level of nesting (cyclic nesting is ignored)
 
 ### Groups
 
 - Default group for self - only you
-- Can create n groups with specific users
 - Default group for all app users
+- Can create n groups with specific users
+- Creator of groups has admin role
+- Admins can give admin to other users
+- Admins can add and remove users from groups
 
 ### Sharing Pages & Collections
 
 - User can share pages/collections with user or group
+- Technically, any sha
 
 ### Forking
 
@@ -67,7 +74,7 @@ WikiNodes is a project designed to bring the fork/diff/merge topology popularize
 
 ### Correspondence to Git Concepts
 
-| WikiNodes    | Git                       |
+| HoloWiki     | Git                       |
 | ------------ | ------------------------- |
 | Collection   | Repo                      |
 | Branch       | Branch                    |
@@ -84,7 +91,7 @@ relevant docs:
  -->
 
 ```plantuml
-title Page Versions
+title Data Model
 hide circle
 skinparam linetype ortho
 
@@ -101,7 +108,7 @@ entity Branch {
     name: String
 }
 
-entity Page {
+entity Document {
     id: <<uuid>>
 }
 
@@ -109,18 +116,22 @@ entity Tag {
     content: String
 }
 
-entity "Page Version" {
+entity "Document Version" {
+    Subclasses:
+    Page Version
+    Collection Version
+    ---
     id: <<content hash>>
     title: String
     alternate titles: String[]
 }
 
-"Page Version" ||--o{ Tag
+"Document Version" ||--o{ Tag
 User }--{ Group
-Group ||--o{ Collection
+User ||--o{ Collection
 Collection ||--{ Branch
-Branch ||--{ "Page Version"
-Page ||--{ "Page Version"
+Branch ||--{ "Document Version"
+Document ||--{ "Document Version"
 ```
 
 ---
