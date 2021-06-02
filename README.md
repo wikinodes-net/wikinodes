@@ -2,6 +2,17 @@
 
 HoloWiki is a project designed to bring the fork/diff/merge topology popularized by git/hub into the space of private collaboration. A user may, for example, add their life's work to their HoloWiki running on their local Holochain, and privately share any nodes or collections with users or groups they select. Users can then fork each other's nodes, and merge in changes from other users' forks.
 
+## Use Cases
+
+- Collaborating around solving problems
+- Forking wikipedia (e.g. adding pages that have been deleted by gatekeepers)
+- Forking scientific papers
+- Differentiating, rating, and merging solutions to global challenges
+- Collaborative content creation (e.g. pages, courses and learning materials)
+- Forking the best collections assembled by others
+- Sorting and graphing content relationships based on trust or semantic tagging
+- Better system for collecting bookmarks, research, etc
+
 ## Features
 
 ### Creating Pages
@@ -11,10 +22,10 @@ HoloWiki is a project designed to bring the fork/diff/merge topology popularized
 
 ### Collections
 
-- User can group pages into collections
+- User can group Pages (and other Files) into collections
 - Collections may differ across users and branches
-- A collection is technically a document (JSON or [NDJSON](http://ndjson.org/))
-- Collections can be forked and branched like other documents
+- A collection is technically a File (JSON or [NDJSON](http://ndjson.org/))
+- Collections can be forked and branched like other Files
 - Collections can contain other collections, to any level of nesting (cyclic nesting is ignored)
 
 ### Groups
@@ -24,7 +35,7 @@ HoloWiki is a project designed to bring the fork/diff/merge topology popularized
 - Can create n groups with specific users
 - Creator of groups has admin role
 - Admins can give admin to other users
-- Admins can add and remove users from groups
+- Admins can add and remove (non-admin) users from groups
 
 ### Sharing Pages & Collections
 
@@ -36,8 +47,9 @@ HoloWiki is a project designed to bring the fork/diff/merge topology popularized
 - Any user can edit (fork) any page they are able to view
 - Forker chooses visiblity of their fork:
   - `public`
+  - `network` (all upstream/downstream authors who can see this collection)
   - `upstream` (author of forked page)
-  - `collection` network (all upstream/downstream authors)
+  - `group` of your choice
   - `private`
 
 ### Branches
@@ -47,11 +59,11 @@ HoloWiki is a project designed to bring the fork/diff/merge topology popularized
 
 ### Merging
 
-- Users can choose to merge changes from any other branch, their or otherwise, into any of their branches
+- Users can choose to merge changes from any other branch, theirs or otherwise, into any of their branches
 
 ### Trust Network
 
-- Multilayered trust graphs allow users to filter what they see, eliminating spam and abuse
+- Cascading trust graphs allow users to filter what they see, eliminating spam and abuse
 
 ## Bonus Feature: Realtime Collaboration
 
@@ -78,9 +90,9 @@ HoloWiki is a project designed to bring the fork/diff/merge topology popularized
 | ------------ | ------------------------- |
 | Collection   | Repo                      |
 | Branch       | Branch                    |
-| Page Version | Commit (to a single file) |
+| File Version | Commit (to a single file) |
 | Tag          | Tag                       |
-| Page         | File in non-bare repo     |
+| File         | File in non-bare repo     |
 
 ---
 
@@ -108,7 +120,12 @@ entity Branch {
     name: String
 }
 
-entity Document {
+entity File {
+    Examples:
+    Rich Text
+    Media
+    Collection
+    ---
     id: <<uuid>>
 }
 
@@ -116,9 +133,10 @@ entity Tag {
     content: String
 }
 
-entity "Document Version" {
-    Subclasses:
-    Page Version
+entity "File Version" {
+    Examples:
+    Rich Text Version
+    Media Version
     Collection Version
     ---
     id: <<content hash>>
@@ -126,12 +144,12 @@ entity "Document Version" {
     alternate titles: String[]
 }
 
-"Document Version" ||--o{ Tag
+"File Version" ||--o{ Tag
 User }--{ Group
 User ||--o{ Collection
 Collection ||--{ Branch
-Branch ||--{ "Document Version"
-Document ||--{ "Document Version"
+Branch ||--{ "File Version"
+File ||--{ "File Version"
 ```
 
 ---
@@ -157,13 +175,13 @@ entity Rating {
     content: String
 }
 
-entity "Page Version" {
+entity "File Version" {
     id: <<content hash>>
 }
 
 
 Viewer ||--o{ Rating: //source//
-Rating ||--o| "Page Version": //target//
+Rating ||--o| "File Version": //target//
 Rating ||--o| User: //target//
 ```
 
@@ -201,6 +219,6 @@ Viewer ||--o{ "Level 1 Rating": //source//
 "Level 1 Rating" ||--|| Reviewer: //target//
 
 Reviewer ||--o{ "Level 2 Rating": //source//
-"Level 2 Rating" ||--o| "Page Version": //target//
+"Level 2 Rating" ||--o| "File Version": //target//
 "Level 2 Rating" ||--o| User: //target//
 ```
