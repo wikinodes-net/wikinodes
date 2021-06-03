@@ -120,28 +120,23 @@ entity Branch {
     name: String
 }
 
-entity File {
-    Examples:
-    Rich Text
-    Media
-    Collection
-    ---
-    id: <<uuid>>
-}
-
 entity Tag {
     content: String
 }
 
 entity "File Version" {
-    Examples:
-    Rich Text Version
-    Media Version
-    Collection Version
-    ---
     id: <<content hash>>
-    title: String
-    alternate titles: String[]
+    content: Byte[]
+    metadata: Dictionary
+}
+
+entity "File View" {
+    Examples:
+    - Rich Text
+    - Media
+    - Collection
+    ---
+    id: <<uuid>>
 }
 
 "File Version" ||--o{ Tag
@@ -149,7 +144,7 @@ User }--{ Group
 User ||--o{ Collection
 Collection ||--{ Branch
 Branch ||--{ "File Version"
-File ||--{ "File Version"
+"File View" ||--{ "File Version"
 ```
 
 ---
