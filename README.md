@@ -1,6 +1,6 @@
-# HoloWiki
+# WikiNodes
 
-HoloWiki is a project designed to bring the fork/diff/merge topology popularized by git/hub into the space of private collaboration. A user may, for example, add their life's work to their HoloWiki running on their local Holochain, and privately share any nodes or collections with users or groups they select. Users can then fork each other's nodes, and merge in changes from other users' forks.
+WikiNodes is a project designed to bring the fork/diff/merge topology popularized by git/hub into the space of private collaboration. A user may, for example, add their life's work to their WikiNodes running on their local Holochain, and privately share any nodes or collections with users or groups they select. Users can then fork each other's nodes, and merge in changes from other users' forks.
 
 ## Use Cases
 
@@ -18,7 +18,7 @@ HoloWiki is a project designed to bring the fork/diff/merge topology popularized
 ### Creating Pages
 
 - Pages can be imported from other wikis, or uploaded from local files
-- Any creative commons (CC-BY-SA) licensed page from any existing site may be forked into, and modified within, HoloWiki
+- Any creative commons (CC-BY-SA) licensed page from any existing site may be forked into, and modified within, WikiNodes
 
 ### Collections
 
@@ -86,7 +86,7 @@ HoloWiki is a project designed to bring the fork/diff/merge topology popularized
 
 ### Correspondence to Git Concepts
 
-| HoloWiki     | Git                       |
+| WikiNodes    | Git                       |
 | ------------ | ------------------------- |
 | Collection   | Repo                      |
 | Branch       | Branch                    |
