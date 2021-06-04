@@ -1,19 +1,16 @@
-name: CI
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
+on: push
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os: [macos-11, ubuntu-latest]
         node-version: [14.x]
 
     steps:
+      - run: uname -a
       - name: Fetch source code
         uses: actions/checkout@v2
       - name: Use Nix
@@ -23,10 +20,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Configure Nix substituters
-        run: |
-          set -xe
-          mkdir -p ~/.config/nix/
-          cp ./.github/nix.conf ~/.config/nix/
+        run: mkdir -p ~/.config/nix && cp ./.github/nix.conf ~/.config/nix/
       - name: Prepare Nix environment
         run: nix-shell --command "echo Completed"
       - name: Run all tests
