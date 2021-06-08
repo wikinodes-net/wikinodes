@@ -3,10 +3,12 @@ on: push
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        # os: [macos-11, ubuntu-latest]
+        os: [macos-10.15, ubuntu-latest]
         node-version: [14.x]
 
     steps:
