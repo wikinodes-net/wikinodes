@@ -20,6 +20,7 @@ jobs:
       #   actions/setup-node@v1
       #   with:
       #     node-version: 14.x
+      - run: scripts/install-hc-tools.sh
       - run: cd tests && npm install && npm test
 
   test-nix:
@@ -33,7 +34,7 @@ jobs:
     steps:
       - run: uname -a
       - uses: actions/checkout@v2
-      - uses: cachix/install-nix-action@v12g s
+      - uses: cachix/install-nix-action@v12
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
