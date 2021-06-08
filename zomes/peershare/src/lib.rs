@@ -18,7 +18,6 @@ pub struct InputArgumentDTO {
 pub struct HelloWorldResultDTO {
     pub data: String,
 }
-
 #[hdk_extern]
 pub fn hello_world(input: InputArgumentDTO) -> ExternResult<HelloWorldResultDTO> {
     let result = HelloWorldResultDTO {

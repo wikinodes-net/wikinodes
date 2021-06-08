@@ -8,9 +8,9 @@ edition = "2018"
 
 [lib]
 name = "peershare"
-crate-type = ["cdylib", "rlib"]
+crate-type = [ "cdylib", "rlib" ]
 
 [dependencies]
-hdk = "0.0.101-alpha.0"
+hdk = "0.0.100"
 serde = "1"
 holo_hash = "0.0.2-alpha.1"
