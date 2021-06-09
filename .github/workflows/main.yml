@@ -25,8 +25,8 @@ jobs:
             substituters = https://hydra.iohk.io https://cache.nixos.org/ https://cache.holo.host/
             trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= cache.holo.host-1:lNXIXtJgS9Iuw4Cu6X0HINLu9sTfcjEntnrgwMQIMcE= cache.holo.host-2:ZJCkX3AUYZ8soxTLfTb60g+F3MkWD7hkH9y8CgqwhDQ=
 
-      - name: Print nixpkgs version
-        run: nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
+      # - name: Print nixpkgs version
+      #   run: nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
