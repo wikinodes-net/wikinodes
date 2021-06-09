@@ -3,7 +3,7 @@ on: [push, pull_request]
 
 defaults:
   run:
-    shell: bash
+    # shell: bash
     working-directory: backend-holochain
 
 jobs:
