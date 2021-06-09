@@ -17,19 +17,22 @@ jobs:
     steps:
       - name: Fetch source code
         uses: actions/checkout@v2
-      - name: Use Nix
-        uses: cachix/install-nix-action@v12
+
+      - name: Set up nix
+        uses: cachix/install-nix-action@v13
+        with:
+          extra_nix_config: |
+            substituters = https://hydra.iohk.io https://cache.nixos.org/ https://cache.holo.host/
+            trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= cache.holo.host-1:lNXIXtJgS9Iuw4Cu6X0HINLu9sTfcjEntnrgwMQIMcE= cache.holo.host-2:ZJCkX3AUYZ8soxTLfTb60g+F3MkWD7hkH9y8CgqwhDQ=
+
+      - name: Print nixpkgs version
+        run: nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Configure Nix substituters
-        run: |
-          set -xe
-          mkdir -p ~/.config/nix/
-          pwd
-          ls -la
-          cp ../.github/nix.conf ~/.config/nix/
+
       - name: Prepare Nix environment
         run: nix-shell --command "echo Completed"
 
