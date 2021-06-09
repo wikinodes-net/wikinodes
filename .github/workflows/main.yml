@@ -1,6 +1,11 @@
 name: CI
 on: [push, pull_request]
 
+defaults:
+  run:
+    shell: bash
+    working-directory: backend-holochain
+
 jobs:
   test-nix:
     runs-on: ${{ matrix.os }}
