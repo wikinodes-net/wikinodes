@@ -2,48 +2,14 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  test-raw:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        # os: [macos-11, ubuntu-latest]
-        # os: [macos-10.15, ubuntu-latest]
-        os: [ubuntu-latest]
-        node-version: [14.x]
-
-    steps:
-      - run: uname -a
-      - run: node -v
-      - run: npm -v
-
-      - name: Fetch source code
-        uses: actions/checkout@v2
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          # toolchain: nightly
-          target: wasm32-unknown-unknown
-      - run: rustup component list --installed
-      - run: rustup show
-
-      - run: scripts/install-hc-tools.sh
-      - run: cd tests && npm install && npm test
-
   test-nix:
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        # os: [macos-11, ubuntu-latest]
+        os: [macos-11, ubuntu-latest]
         # os: [macos-10.15, ubuntu-latest]
-        os: [ubuntu-latest]
+        # os: [ubuntu-latest]
         node-version: [14.x]
 
     steps:
@@ -67,3 +33,37 @@ jobs:
         run: nix-shell --command "echo Completed"
       - name: Run all tests
         run: nix-shell --run 'cd tests && npm install && npm test'
+
+  # test-raw:
+  #   runs-on: ${{ matrix.os }}
+
+  #   strategy:
+  #     matrix:
+  #       # os: [macos-11, ubuntu-latest]
+  #       # os: [macos-10.15, ubuntu-latest]
+  #       os: [ubuntu-latest]
+  #       node-version: [14.x]
+
+  #   steps:
+  #     - run: uname -a
+  #     - run: node -v
+  #     - run: npm -v
+
+  #     - name: Fetch source code
+  #       uses: actions/checkout@v2
+
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+
+  #     - uses: actions-rs/toolchain@v1
+  #       with:
+  #         toolchain: stable
+  #         # toolchain: nightly
+  #         target: wasm32-unknown-unknown
+  #     - run: rustup component list --installed
+  #     - run: rustup show
+
+  #     - run: scripts/install-hc-tools.sh
+  #     - run: cd tests && npm install && npm test
