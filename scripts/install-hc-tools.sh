@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 HOLOCHAIN_GITHUB=https://github.com/holochain/holochain.git
-REV=8d6c4cd29bd17e8224aeffb87dc03eaf3ff33508
+REV=24ceb63bdea374d1936b723e1966caf2e55ebfdc
 
 cargo install holochain_cli \
   --git $HOLOCHAIN_GITHUB \
