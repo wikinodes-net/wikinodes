@@ -16,9 +16,9 @@ jobs:
         node-version: [14.x]
 
     steps:
-      - run: uname -a
-      - run: node -v
-      - run: npm -v
+      # - run: uname -a
+      # - run: node -v
+      # - run: npm -v
       - name: Fetch source code
         uses: actions/checkout@v2
       - name: Use Nix
