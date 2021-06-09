@@ -1,7 +1,5 @@
 [workspace]
-members = [
-  "zomes/peershare"
-]
+members = ["zomes/peershare"]
 
 [profile.dev]
 opt-level = "z"
@@ -9,3 +7,9 @@ opt-level = "z"
 [profile.release]
 opt-level = "z"
 
+[patch.crates-io]
+hdk = { git = "https://github.com/holochain/holochain", rev = "24ceb63bdea374d1936b723e1966caf2e55ebfdc", package = "hdk" }
+# hdk = { path = "../holochain/crates/hdk" }
+hc_utils = { git = "https://github.com/holochain/hc-utils", branch = "0.0.101-alpha.0", package = "hc_utils" }
+# hc_utils = { path = "../hc-utils/crates/hc-utils" }
+holo_hash = { git = "https://github.com/holochain/holochain.git", rev = "24ceb63bdea374d1936b723e1966caf2e55ebfdc", package = "holo_hash" }
