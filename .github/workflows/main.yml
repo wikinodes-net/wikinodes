@@ -31,10 +31,14 @@ jobs:
 
       # - name: Use recent bash in nix
       #   run: nix-env -iA nixpkgs.bashInteractive
-      - run: nix-build -A bashInteractive '<nixpkgs>'
+      # - run: nix-build -A bashInteractive '<nixpkgs>'
       # or if that fails:
       # unset NIX_BUILD_SHELL; nix-shell -p hello
       # export NIX_BUILD_SHELL=$(nix-build -A bashInteractive '<nixpkgs>')/bin/bash; nix-shell -p hello
+      - run: echo $NIX_BUILD_SHELL
+      - name: Set NIX_BUILD_SHELL
+        run: echo "NIX_BUILD_SHELL=$(nix-build -A bashInteractive '<nixpkgs>')/bin/bash" >> $GITHUB_ENV
+      - run: echo $NIX_BUILD_SHELL
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
