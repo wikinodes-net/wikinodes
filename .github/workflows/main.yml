@@ -21,7 +21,7 @@ jobs:
       - name: Set up nix
         uses: cachix/install-nix-action@v13
         with:
-          nix_path: nixpkgs=channel:nixos-unstable
+          # nix_path: nixpkgs=channel:nixos-unstable
           extra_nix_config: |
             substituters = https://hydra.iohk.io https://cache.nixos.org/ https://cache.holo.host/
             trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= cache.holo.host-1:lNXIXtJgS9Iuw4Cu6X0HINLu9sTfcjEntnrgwMQIMcE= cache.holo.host-2:ZJCkX3AUYZ8soxTLfTb60g+F3MkWD7hkH9y8CgqwhDQ=
@@ -29,8 +29,9 @@ jobs:
       # - name: Print nixpkgs version
       #   run: nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
 
-      - name: Use recent bash in nix
-        run: nix-env -iA nixpkgs.bashInteractive
+      # - name: Use recent bash in nix
+      #   run: nix-env -iA nixpkgs.bashInteractive
+      - run: nix-build -A bashInteractive '<nixpkgs>'
       # or if that fails:
       # unset NIX_BUILD_SHELL; nix-shell -p hello
       # export NIX_BUILD_SHELL=$(nix-build -A bashInteractive '<nixpkgs>')/bin/bash; nix-shell -p hello
