@@ -16,7 +16,8 @@ jobs:
       fail-fast: false
 
     steps:
-      - run: node -v
+      - name: node -v
+        run: node -v
 
       - name: Fetch source code
         uses: actions/checkout@v2
