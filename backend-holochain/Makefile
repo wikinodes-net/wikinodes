@@ -2,8 +2,9 @@
 
 SHELL		= bash
 DNA_NAME		= wikinodes
-DNA		= $(DNA_NAME).dna
-HAPP		= $(DNA_NAME).happ
+DNA_DIR		= dna
+DNA		= $(DNA_DIR)/$(DNA_NAME).dna
+HAPP		= $(DNA_DIR)/$(DNA_NAME).happ
 WASM		= target/wasm32-unknown-unknown/release/wikinodes.wasm
 
 # External targets; Uses a nix-shell environment to obtain Holochain runtimes, run tests, etc.
@@ -28,8 +29,8 @@ build: $(DNA)
 # Package the DNA from the built target release WASM
 $(DNA):		$(WASM) FORCE
 	@echo "Packaging DNA:"
-	@hc dna pack . -o $(DNA)
-	@hc app pack . -o $(HAPP)
+	@hc dna pack $(DNA_DIR) -o $(DNA)
+	@hc app pack $(DNA_DIR) -o $(HAPP)
 	@ls -l $@
 
 # Recompile the target release WASM

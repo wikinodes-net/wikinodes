@@ -5,10 +5,7 @@ import path from 'path'
 export const conductorConfig = Config.gen({})
 export const Wikinodes_Zome = 'wikinodes'
 
-export const wikinodesDNA = path.join(
-  __dirname,
-  '../../workdir/dna/wikinodes.dna',
-)
+export const wikinodesDNA = path.join(__dirname, '../../dna/wikinodes.dna')
 
 const installationAgents: InstallAgentsHapps = [
   // agent 0
