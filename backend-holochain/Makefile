@@ -41,7 +41,7 @@ $(WASM): FORCE
 
 .PHONY: test
 
-test:
+test: build
 	cd tests && npm test
 
 # Generic targets; does not require a Nix environment

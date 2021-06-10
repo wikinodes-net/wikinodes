@@ -4,10 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:setup && npm run test:exec",
-    "test:setup": "CARGO_TARGET_DIR=../target cargo build --release --target wasm32-unknown-unknown && hc dna pack  ../dna",
-    "test:exec": "TRYORAMA_LOG_LEVEL=info RUST_LOG=error RUST_BACKTRACE=1 TRYORAMA_HOLOCHAIN_PATH=\"holochain\" ts-node src/index.ts",
-    "tsc": "tsc"
+    "test": "TRYORAMA_LOG_LEVEL=info RUST_LOG=error RUST_BACKTRACE=1 TRYORAMA_HOLOCHAIN_PATH=\"holochain\" ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
