@@ -19,10 +19,12 @@ jobs:
       - name: Fetch source code
         uses: actions/checkout@v2
 
+      - run: xcodebuild -version
       - name: Setup Xcode version
         uses: maxim-lobanov/setup-xcode@v1.2.3
         with:
           xcode-version: latest-stable
+      - run: xcodebuild -version
 
       - name: Set up nix
         uses: cachix/install-nix-action@v13
