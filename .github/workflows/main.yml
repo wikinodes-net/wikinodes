@@ -8,6 +8,7 @@ defaults:
 jobs:
   test-nix:
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
 
     strategy:
       matrix:
@@ -26,19 +27,8 @@ jobs:
             substituters = https://hydra.iohk.io https://cache.nixos.org/ https://cache.holo.host/
             trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= cache.holo.host-1:lNXIXtJgS9Iuw4Cu6X0HINLu9sTfcjEntnrgwMQIMcE= cache.holo.host-2:ZJCkX3AUYZ8soxTLfTb60g+F3MkWD7hkH9y8CgqwhDQ=
 
-      # - name: Print nixpkgs version
-      #   run: nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
-
-      # - name: Use recent bash in nix
-      #   run: nix-env -iA nixpkgs.bashInteractive
-      # - run: nix-build -A bashInteractive '<nixpkgs>'
-      # or if that fails:
-      # unset NIX_BUILD_SHELL; nix-shell -p hello
-      # export NIX_BUILD_SHELL=$(nix-build -A bashInteractive '<nixpkgs>')/bin/bash; nix-shell -p hello
-      - run: echo $NIX_BUILD_SHELL
-      - name: Set NIX_BUILD_SHELL
+      - name: Install recent bash, and set as NIX_BUILD_SHELL # needed by macos, which has an older bash incompatible with nix
         run: echo "NIX_BUILD_SHELL=$(nix-build -A bashInteractive '<nixpkgs>')/bin/bash" >> $GITHUB_ENV
-      - run: echo $NIX_BUILD_SHELL
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -48,8 +38,10 @@ jobs:
       - name: Prepare Nix environment
         run: nix-shell --command "echo Completed"
 
-      - run: cd tests && nix-shell --run 'npm install' ../default.nix
-      - run: cd tests && nix-shell --run 'npm test' ../default.nix
+      - name: Run tests
+        run: nix-shell --run 'cd tests && npm install && npm test'
+        timeout-minutes: 10 # sometimes failing tryorama tests hang and run for hours...
+
 
   # test-raw:
   #   runs-on: ${{ matrix.os }}
