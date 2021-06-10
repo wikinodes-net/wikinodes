@@ -1,5 +1,5 @@
 [workspace]
-members = ["zomes/peershare"]
+members = ["zomes/wikinodes"]
 
 [profile.dev]
 opt-level = "z"

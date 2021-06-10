@@ -1,8 +1,8 @@
 ---
-manifest_version: "1"
-name: peershare
+manifest_version: '1'
+name: wikinodes
 uuid: 00000000-0000-0000-0000-000000000000
 properties: ~
 zomes:
-  - name: peershare
-    bundled: ../../target/wasm32-unknown-unknown/release/peershare.wasm
+  - name: wikinodes
+    bundled: ../../target/wasm32-unknown-unknown/release/wikinodes.wasm
