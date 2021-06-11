@@ -51,8 +51,6 @@ jobs:
       - name: Prepare Nix environment
         run: nix-shell --command "echo Completed"
 
-      - run: nix-shell --run 'cd tests && npm install'
-
       - run: make nix-build
 
       - run: make nix-test

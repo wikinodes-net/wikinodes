@@ -42,7 +42,10 @@ $(WASM): FORCE
 .PHONY: test
 
 test: build
-	cd tests && npm test
+	cd tests && ( [ -d node_modules ] || npm install ) && npm test
+
+test-ci: build
+	cd tests && npm install && npm test
 
 # Generic targets; does not require a Nix environment
 .PHONY: clean
