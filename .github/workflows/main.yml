@@ -16,13 +16,13 @@ jobs:
       fail-fast: false
 
     steps:
+      - name: Fetch source code
+        uses: actions/checkout@v2
+
       - name: pwd
         run: pwd
       - name: date # debugging failing test
         run: date
-
-      - name: Fetch source code
-        uses: actions/checkout@v2
 
       - name: Setup Xcode version
         if: ${{ runner.os == 'macOS' }}
