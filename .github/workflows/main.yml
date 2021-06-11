@@ -16,8 +16,10 @@ jobs:
       fail-fast: false
 
     steps:
-      - run: pwd
-      - run: date # debugging failing test
+      - name: pwd
+        run: pwd
+      - name: date # debugging failing test
+        run: date
 
       - name: Fetch source code
         uses: actions/checkout@v2
