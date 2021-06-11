@@ -30,7 +30,7 @@ export const InstallAgentApp = async (s, agentName: string) => {
   })
 
   const req: InstallAppRequest = {
-    installed_app_id: `peer-share-app-` + agentName,
+    installed_app_id: `wikinodes-` + agentName,
     agent_key: agent_key,
     dnas: [
       {
