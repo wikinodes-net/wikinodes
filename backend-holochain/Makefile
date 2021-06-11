@@ -1,11 +1,11 @@
 # Note: you can build a target directly, eg: `nix-build -A wikinodes`
 
-SHELL		= bash
-DNA_NAME		= wikinodes
-DNA_DIR		= dna
-DNA		= $(DNA_DIR)/$(DNA_NAME).dna
-HAPP		= $(DNA_DIR)/$(DNA_NAME).happ
-WASM		= target/wasm32-unknown-unknown/release/wikinodes.wasm
+SHELL    = bash
+DNA_NAME = wikinodes
+DNA_DIR  = dna
+DNA      = $(DNA_DIR)/$(DNA_NAME).dna
+HAPP     = $(DNA_DIR)/$(DNA_NAME).happ
+WASM     = target/wasm32-unknown-unknown/release/wikinodes.wasm
 
 # External targets; Uses a nix-shell environment to obtain Holochain runtimes, run tests, etc.
 .PHONY: all FORCE
@@ -13,7 +13,7 @@ all: nix-test
 
 # eg:
 # 	make nix-test
-# 	make nix-install
+# 	make nix-build
 #   ...
 nix-%:
 	nix-shell --pure --run "make $*"
@@ -21,7 +21,7 @@ nix-%:
 # Internal targets; require a Nix environment in order to be deterministic.
 # - Uses the version of `hc`, `holochain` on the system PATH.
 # - Normally called from within a Nix environment, eg. run `nix-shell`
-.PHONY:		rebuild install build
+.PHONY:		rebuild build
 rebuild:	clean build
 
 build: $(DNA)
@@ -37,7 +37,27 @@ $(DNA):		$(WASM) FORCE
 $(WASM): FORCE
 	@echo "Building  DNA WASM:"
 	@RUST_BACKTRACE=1 CARGO_TARGET_DIR=target cargo build \
-	    --release --target wasm32-unknown-unknown
+		--release --target wasm32-unknown-unknown
+
+.PHONY:		dev
+
+dev: build
+	@hc sandbox generate \
+		--run 8000 \
+		--app-id wikinodes \
+		--root tmp \
+		dna/wikinodes.happ
+
+dev-multi: build
+	@hc sandbox generate \
+		--run 8000,8001 \
+		--app-id wikinodes \
+		--num-sandboxes 2 \
+		--root tmp \
+		dna/wikinodes.happ
+		network \
+			--bootstrap https://bootstrap-staging.holo.host \
+			quic \
 
 .PHONY: test
 
@@ -51,8 +71,8 @@ test-ci: build
 .PHONY: clean
 clean:
 	rm -rf \
-	    tests/node_modules \
-	    .cargo \
+		tests/node_modules \
+		.cargo \
 			Cargo.lock \
-	    target \
-	    $(DNA)
+		target \
+		$(DNA)

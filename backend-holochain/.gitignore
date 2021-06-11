@@ -1,5 +1,10 @@
 .cargo/
 .hc
-target/
+.hc_live_*
 *.dna
 *.happ
+/tmp/*
+target/
+
+# Negative ignores last:
+!.gitkeep
