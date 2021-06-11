@@ -44,10 +44,6 @@ jobs:
       - name: Install recent bash, and set as NIX_BUILD_SHELL # needed by macos, which has an older bash incompatible with nix
         run: echo "NIX_BUILD_SHELL=$(nix-build -A bashInteractive '<nixpkgs>')/bin/bash" >> $GITHUB_ENV
 
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-
       - name: Prepare Nix environment
         run: nix-shell --command "echo Completed"
 
