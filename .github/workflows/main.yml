@@ -25,6 +25,9 @@ jobs:
           xcode-version: latest-stable
         if: ${{ runner.os == 'macOS' }}
 
+      - run: sw_vers
+        if: ${{ runner.os == 'macOS' }}
+
       - name: Set up nix
         uses: cachix/install-nix-action@v13
         with:
