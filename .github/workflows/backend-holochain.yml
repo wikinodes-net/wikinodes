@@ -1,5 +1,10 @@
-name: CI
-on: [push, pull_request]
+name: backend-holochain
+
+on:
+  push:
+    paths:
+      - world/hud/**
+      - .github/workflows/hud.yaml
 
 defaults:
   run:
@@ -46,9 +51,6 @@ jobs:
 
       - name: Prepare Nix environment
         run: nix-shell --command "echo Completed"
-
-      # debugging failing test
-      - run: nix-shell --pure --run 'set -x && date && cd ../.github && rustc debug.rs && ./debug'
 
       - run: make nix-build
 
