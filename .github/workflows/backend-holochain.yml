@@ -3,8 +3,8 @@ name: backend-holochain
 on:
   push:
     paths:
-      - world/hud/**
-      - .github/workflows/hud.yaml
+      - backend-holochain/**
+      - .github/workflows/backend-holochain.yaml
 
 defaults:
   run:

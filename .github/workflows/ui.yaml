@@ -1,0 +1,61 @@
+name: ui
+
+on:
+  push:
+    paths:
+      - ui/**
+      - .github/workflows/ui.yaml
+
+defaults:
+  run:
+    working-directory: ui
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}--${{ github.workflow }}--node-modules--${{ hashFiles('ui/yarn.lock') }}
+          restore-keys: ${{ runner.os }}--${{ github.workflow }}--node-modules--
+
+      - run: yarn install --frozen-lockfile
+
+      - run: yarn check
+      - run: yarn lint
+
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,ref,workflow,job
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_CI }}
+        if: failure()
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}--${{ github.workflow }}--node-modules--${{ hashFiles('ui/yarn.lock') }}
+          restore-keys: ${{ runner.os }}--${{ github.workflow }}--node-modules--
+
+      - run: yarn install --frozen-lockfile
+
+      - run: yarn build
+
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,ref,workflow,job
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_CI }}
+        if: failure()
