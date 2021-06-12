@@ -19,10 +19,6 @@ jobs:
       - name: Fetch source code
         uses: actions/checkout@v2
 
-      # debugging failing test
-      - run: date
-      - run: nix-shell --pure --run 'cd ../.github && rustc debug.rs && ./debug'
-
       - name: Setup Xcode version
         if: ${{ runner.os == 'macOS' }}
         uses: maxim-lobanov/setup-xcode@v1.2.3
@@ -50,6 +46,10 @@ jobs:
 
       - name: Prepare Nix environment
         run: nix-shell --command "echo Completed"
+
+      # debugging failing test
+      - run: date
+      - run: nix-shell --pure --run 'cd ../.github && rustc debug.rs && ./debug'
 
       - run: make nix-build
 
