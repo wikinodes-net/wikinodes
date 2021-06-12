@@ -55,7 +55,7 @@ jobs:
       - run: make nix-test
         timeout-minutes: 5 # sometimes failing tryorama tests hang...
 
-  debug time:
+  debug_time:
     runs-on: ${{ matrix.os }}
 
     strategy:
