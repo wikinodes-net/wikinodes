@@ -19,10 +19,9 @@ jobs:
       - name: Fetch source code
         uses: actions/checkout@v2
 
-      - name: pwd
-        run: pwd
-      - name: date # debugging failing test
-        run: date
+      # debugging failing test
+      - run: date
+      - run: nix-shell --pure --run 'cd ../.github && rustc debug.rs && ./debug'
 
       - name: Setup Xcode version
         if: ${{ runner.os == 'macOS' }}
