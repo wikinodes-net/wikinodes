@@ -77,4 +77,4 @@ jobs:
 
       # debugging failing test
       - run: date
-      - run: cd ../.github && rustc debug.rs && ./debug'
+      - run: cd ../.github && rustc debug.rs && ./debug
