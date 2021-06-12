@@ -55,26 +55,27 @@ jobs:
       - run: make nix-test
         timeout-minutes: 5 # sometimes failing tryorama tests hang...
 
-  debug_time:
-    runs-on: ${{ matrix.os }}
 
-    strategy:
-      matrix:
-        os: [macos-10.15, macos-11, ubuntu-20.04]
-      fail-fast: false
+  # debug_time:
+  #   runs-on: ${{ matrix.os }}
 
-    steps:
-      - name: Fetch source code
-        uses: actions/checkout@v2
+  #   strategy:
+  #     matrix:
+  #       os: [macos-10.15, macos-11, ubuntu-20.04]
+  #     fail-fast: false
 
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          # toolchain: nightly
-          # target: wasm32-unknown-unknown
-      - run: rustup component list --installed
-      - run: rustup show
+  #   steps:
+  #     - name: Fetch source code
+  #       uses: actions/checkout@v2
 
-      # debugging failing test
-      - run: date
-      - run: cd ../.github && rustc debug.rs && ./debug
+  #     - uses: actions-rs/toolchain@v1
+  #       with:
+  #         toolchain: stable
+  #         # toolchain: nightly
+  #         # target: wasm32-unknown-unknown
+  #     - run: rustup component list --installed
+  #     - run: rustup show
+
+  #     # debugging failing test
+  #     - run: date
+  #     - run: cd ../.github && rustc debug.rs && ./debug
