@@ -24,8 +24,8 @@ jobs:
           restore-keys: ${{ runner.os }}--${{ github.workflow }}--node-modules--
 
       - run: npm ci
-      - run: npm check
-      - run: npm lint
+      - run: npm run check
+      - run: npm run lint
 
       - uses: 8398a7/action-slack@v3
         with:
@@ -48,7 +48,7 @@ jobs:
           restore-keys: ${{ runner.os }}--${{ github.workflow }}--node-modules--
 
       - run: npm ci
-      - run: npm build
+      - run: npm run build
 
       - uses: 8398a7/action-slack@v3
         with:
