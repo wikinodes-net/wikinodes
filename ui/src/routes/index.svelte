@@ -30,7 +30,7 @@
     return formatCurrency(dollars)
   }
 
-  function formatCurrency(number) {
+  function formatCurrency(number: number) {
     return number
       .toLocaleString('en-US', {
         // maximumFractionDigits: 0,
