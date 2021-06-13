@@ -54,6 +54,8 @@ jobs:
 
       - run: make nix-build
 
+      - run: make nix-clippy
+
       - run: make nix-test
         timeout-minutes: 5 # sometimes failing tryorama tests hang...
 

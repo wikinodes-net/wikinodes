@@ -67,12 +67,14 @@ test: build
 test-ci: build
 	cd tests && npm install && npm test
 
-# Generic targets; does not require a Nix environment
+clippy: build
+	cargo clippy --all-targets --all-features -- -D warnings
+
 .PHONY: clean
 clean:
 	rm -rf \
 		tests/node_modules \
 		.cargo \
-			Cargo.lock \
+		Cargo.lock \
 		target \
 		$(DNA)
