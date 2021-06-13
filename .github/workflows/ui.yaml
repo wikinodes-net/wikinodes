@@ -19,14 +19,13 @@ jobs:
       - name: cache node modules
         uses: actions/cache@v2
         with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}--${{ github.workflow }}--node-modules--${{ hashFiles('ui/yarn.lock') }}
+          path: ~/.npm
+          key: ${{ runner.os }}--${{ github.workflow }}--node-modules--${{ hashFiles('ui/package-lock.json') }}
           restore-keys: ${{ runner.os }}--${{ github.workflow }}--node-modules--
 
-      - run: yarn install --frozen-lockfile
-
-      - run: yarn check
-      - run: yarn lint
+      - run: npm ci
+      - run: npm check
+      - run: npm lint
 
       - uses: 8398a7/action-slack@v3
         with:
@@ -44,13 +43,12 @@ jobs:
       - name: cache node modules
         uses: actions/cache@v2
         with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}--${{ github.workflow }}--node-modules--${{ hashFiles('ui/yarn.lock') }}
+          path: ~/.npm
+          key: ${{ runner.os }}--${{ github.workflow }}--node-modules--${{ hashFiles('ui/package-lock.json') }}
           restore-keys: ${{ runner.os }}--${{ github.workflow }}--node-modules--
 
-      - run: yarn install --frozen-lockfile
-
-      - run: yarn build
+      - run: npm ci
+      - run: npm build
 
       - uses: 8398a7/action-slack@v3
         with:
