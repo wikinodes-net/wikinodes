@@ -1,5 +1,7 @@
 # WikiNodes
 
+_We are at a very early stage of development, nothing to see here beyond this README. 😊_
+
 WikiNodes is a project designed to bring the fork/diff/merge topology popularized by git/hub into the space of private collaboration. A user may, for example, add their life's work to their WikiNodes running on their local Holochain, and privately share any nodes or collections with users or groups they select. Users can then fork each other's nodes, and merge in changes from other users' forks.
 
 ## Use Cases
