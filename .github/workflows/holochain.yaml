@@ -1,14 +1,14 @@
-name: backend-holochain
+name: holochain
 
 on:
   push:
     paths:
-      - backend-holochain/**
-      - .github/workflows/backend-holochain.yaml
+      - holochain/**
+      - .github/workflows/holochain.yaml
 
 defaults:
   run:
-    working-directory: backend-holochain
+    working-directory: holochain
 
 jobs:
   test-nix:

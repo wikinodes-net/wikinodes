@@ -1,0 +1,59 @@
+name: holochain-ui
+
+on:
+  push:
+    paths:
+      - holochain/ui/**
+      - .github/workflows/holochain-ui.yaml
+
+defaults:
+  run:
+    working-directory: holochain/ui
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}--${{ github.workflow }}--node-modules--${{ hashFiles('ui/package-lock.json') }}
+          restore-keys: ${{ runner.os }}--${{ github.workflow }}--node-modules--
+
+      - run: npm ci
+      - run: npm run check
+      - run: npgm run lint
+
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,ref,workflow,job
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_CI }}
+        if: failure()
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key:          ${{ runner.os }}--${{ github.workflow }}--node-modules--${{ hashFiles('holochain/ui/package-lock.json') }}
+          restore-keys: ${{ runner.os }}--${{ github.workflow }}--node-modules--
+
+      - run: npm ci
+      - run: npm run build
+
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,ref,workflow,job
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_CI }}
+        if: failure()
