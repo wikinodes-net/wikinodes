@@ -13,7 +13,6 @@
     "sort": "sort-package-json"
   },
   "dependencies": {
-    "@holochain/conductor-api": "holochain/holochain-conductor-api#8967b93d3e3eace63110b20ea2765112e3388d54",
     "buffer": "^6.0.3"
   },
   "devDependencies": {
