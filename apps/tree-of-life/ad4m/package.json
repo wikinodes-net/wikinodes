@@ -1,0 +1,22 @@
+{
+  "name": "tree-of-life",
+  "version": "0.0.1",
+  "license": "CAL-1.0",
+  "author": {
+    "name": "Harlan T Wood",
+    "email": "code@harlantwood.net"
+  },
+  "contributors": [],
+  "scripts": {
+    "dev": "node index.js",
+    "dev:ts": "ts-node index.ts",
+    "sort": "sort-package-json"
+  },
+  "dependencies": {
+    "@apollo/client": "3.3.20",
+    "@perspect3vism/ad4m": "^0.1.7",
+    "sort-package-json": "^1.50.0",
+    "subscriptions-transport-ws": "^0.9.19",
+    "ts-node": "^10.2.1"
+  }
+}
