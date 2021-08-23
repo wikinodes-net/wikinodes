@@ -72,10 +72,12 @@ async function xxx() {
   console.log(links);
 
   const uniqueLinkLanguage = await ad4mClient.languages.cloneHolochainTemplate(
-    path.join(__dirname, "../languages/social-context"),
+    path.join(__dirname, "../../../../ad4m-cli/src/builtin-langs/social-context"),
     "social-context",
     "b98e53a8-5800-47b6-adb9-86d55a74871e"
   );
+
+  console.log("uniqueLinkLanguage:", uniqueLinkLanguage)
 }
 
 xxx();
