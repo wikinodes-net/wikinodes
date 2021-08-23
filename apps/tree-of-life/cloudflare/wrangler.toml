@@ -1,0 +1,7 @@
+name = "tree-of-life"
+type = 'webpack'# account_id = ''  # This is set as an env variable instead: CF_ACCOUNT_ID
+route = ''
+zone_id = ''
+usage_model = ''
+workers_dev = true
+target_type = "webpack"

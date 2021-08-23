@@ -1,9 +1,15 @@
 {
   "name": "tree-of-life",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "dotenv wrangler publish"
+  },
   "devDependencies": {
-    "@cloudflare/wrangler": "^1.17.0"
+    "@cloudflare/wrangler": "^1.17.0",
+    "dotenv-cli": "^4.0.0",
+    "sort-package-json": "^1.50.0"
   }
 }

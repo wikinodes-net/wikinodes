@@ -1,1 +1,4 @@
+.env.local
+/dist/
 /node_modules/
+/worker/
