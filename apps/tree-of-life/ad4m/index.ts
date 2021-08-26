@@ -19,9 +19,8 @@ const apolloClient = new ApolloClient({
 });
 
 const ad4mClient = new Ad4mClient(apolloClient);
-// console.log(ad4mClient);
 
-async function xxx() {
+(async function xxx() {
   let isInitialized, isUnlocked, did, result;
 
   result = await ad4mClient.agent.status();
@@ -53,7 +52,7 @@ async function xxx() {
     "A new text note",
     noteIpfsAddress
   );
-  console.log(exprAddress);
+  console.log({exprAddress});
 
   const perspectiveHandle = await ad4mClient.perspective.add(
     "A new perspective on apps..."
@@ -69,15 +68,13 @@ async function xxx() {
     perspectiveHandle.uuid,
     new LinkQuery({})
   );
-  console.log(links);
+  console.log({links});
 
   const uniqueLinkLanguage = await ad4mClient.languages.cloneHolochainTemplate(
-    path.join(__dirname, "../../../../ad4m-cli/src/builtin-langs/social-context"),
+    path.join(__dirname, "../../../../perspect3vism/ad4m-cli/src/builtin-langs/social-context"),
     "social-context",
     "b98e53a8-5800-47b6-adb9-86d55a74871e"
   );
 
   console.log("uniqueLinkLanguage:", uniqueLinkLanguage)
-}
-
-xxx();
+})();
