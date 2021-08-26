@@ -42,19 +42,21 @@ const ad4mClient = new Ad4mClient(apolloClient);
   }
 
   const languages = await ad4mClient.languages.all();
+  console.log({languages});
   const noteIpfsAddress = languages.find(
     (l) => l.name === "note-ipfs"
   )?.address;
-  console.log(noteIpfsAddress);
+  console.log({noteIpfsAddress});
   if (!noteIpfsAddress) throw new Error();
 
   const exprAddress = await ad4mClient.expression.create(
     "A new text note",
     noteIpfsAddress
   );
-  console.log({exprAddress});
+  console.log({ exprAddress });
 
-  const perspectiveHandle = await ad4mClient.perspective.add(
+  let perspectiveHandle;
+  perspectiveHandle = await ad4mClient.perspective.add(
     "A new perspective on apps..."
   );
   await ad4mClient.perspective.addLink(
@@ -64,17 +66,45 @@ const ad4mClient = new Ad4mClient(apolloClient);
       target: exprAddress,
     })
   );
-  const links = await ad4mClient.perspective.queryLinks(
+  let links;
+  links = await ad4mClient.perspective.queryLinks(
     perspectiveHandle.uuid,
     new LinkQuery({})
   );
-  console.log({links});
+  console.log({ links });
 
   const uniqueLinkLanguage = await ad4mClient.languages.cloneHolochainTemplate(
-    path.join(__dirname, "../../../../perspect3vism/ad4m-cli/src/builtin-langs/social-context"),
+    path.join(
+      __dirname,
+      "../../../../perspect3vism/ad4m-cli/src/builtin-langs/social-context"
+    ),
     "social-context",
     "b98e53a8-5800-47b6-adb9-86d55a74871e"
   );
 
-  console.log("uniqueLinkLanguage:", uniqueLinkLanguage)
+  console.log({ uniqueLinkLanguage });
+
+  const meta = new Perspective();
+  console.log({ meta });
+  const neighbourhoodUrl =
+    await ad4mClient.neighbourhood.publishFromPerspective(
+      perspectiveHandle.uuid,
+      uniqueLinkLanguage.address,
+      meta
+    );
+  console.log({ neighbourhoodUrl });
+
+  perspectiveHandle = await ad4mClient.neighbourhood.joinFromUrl(
+    neighbourhoodUrl
+  );
+  links = await ad4mClient.perspective.queryLinks(
+    perspectiveHandle.uuid,
+    new LinkQuery({})
+  );
+  links.forEach(async (link) => {
+    const address = link.data.target;
+    const expression = await ad4mClient.expression.get(address);
+    const data = JSON.parse(expression.data);
+    console.log({ data }); //=> "A new text note"
+  });
 })();
