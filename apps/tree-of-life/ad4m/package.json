@@ -8,8 +8,7 @@
   },
   "contributors": [],
   "scripts": {
-    "dev": "node index.js",
-    "dev:ts": "ts-node index.ts",
+    "dev": "ts-node index.ts",
     "sort": "sort-package-json"
   },
   "dependencies": {
