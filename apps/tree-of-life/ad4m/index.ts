@@ -42,69 +42,51 @@ const ad4mClient = new Ad4mClient(apolloClient);
   }
 
   const languages = await ad4mClient.languages.all();
-  console.log({languages});
-  const noteIpfsAddress = languages.find(
+  // console.log({ languages });
+
+  const language = languages.find(
     (l) => l.name === "note-ipfs"
+    // (l) => l.address === "social-context"
   )?.address;
-  console.log({noteIpfsAddress});
-  if (!noteIpfsAddress) throw new Error();
+  console.log({ language });
+  if (!language) throw new Error();
 
-  const exprAddress = await ad4mClient.expression.create(
-    "A new text note",
-    noteIpfsAddress
+  let treeOfLifePerspective;
+  treeOfLifePerspective = await ad4mClient.perspective.add(
+    "Tree of Life"
   );
-  console.log({ exprAddress });
 
-  let perspectiveHandle;
-  perspectiveHandle = await ad4mClient.perspective.add(
-    "A new perspective on apps..."
+  const funderMuskAddress = await ad4mClient.expression.create(
+    "Musk Foundation",
+    language
+
   );
+  console.log({ funderMuskAddress });
+
+  const fundingEventMuskAddress = await ad4mClient.expression.create(
+    "FundingEvent:Musk2022",
+    language
+  );
+  console.log({ fundingEventMuskAddress });
+
   await ad4mClient.perspective.addLink(
-    perspectiveHandle.uuid,
+    treeOfLifePerspective.uuid,
     new Link({
-      source: "root",
-      target: exprAddress,
+      source: funderMuskAddress,
+      predicate: 'has funding event',
+      target: fundingEventMuskAddress,
     })
   );
+
   let links;
   links = await ad4mClient.perspective.queryLinks(
-    perspectiveHandle.uuid,
+    treeOfLifePerspective.uuid,
     new LinkQuery({})
   );
-  console.log({ links });
+  log({ links });
 
-  const uniqueLinkLanguage = await ad4mClient.languages.cloneHolochainTemplate(
-    path.join(
-      __dirname,
-      "../../../../perspect3vism/ad4m-cli/src/builtin-langs/social-context"
-    ),
-    "social-context",
-    "b98e53a8-5800-47b6-adb9-86d55a74871e"
-  );
-
-  console.log({ uniqueLinkLanguage });
-
-  const meta = new Perspective();
-  console.log({ meta });
-  const neighbourhoodUrl =
-    await ad4mClient.neighbourhood.publishFromPerspective(
-      perspectiveHandle.uuid,
-      uniqueLinkLanguage.address,
-      meta
-    );
-  console.log({ neighbourhoodUrl });
-
-  perspectiveHandle = await ad4mClient.neighbourhood.joinFromUrl(
-    neighbourhoodUrl
-  );
-  links = await ad4mClient.perspective.queryLinks(
-    perspectiveHandle.uuid,
-    new LinkQuery({})
-  );
-  links.forEach(async (link) => {
-    const address = link.data.target;
-    const expression = await ad4mClient.expression.get(address);
-    const data = JSON.parse(expression.data);
-    console.log({ data }); //=> "A new text note"
-  });
 })();
+
+function log(arg: object|string) {
+  console.log(JSON.stringify(arg, null, 4));
+}
