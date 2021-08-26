@@ -1,3 +1,10 @@
+<script context="module">
+	export const ssr = false;
+	// export const hydrate = false;
+	// export const router = false;
+</script>
+
+
 <script lang="ts">
   type FundingTarget = { name: string; funding: string; tags: string }
   let projects: Array<FundingTarget> = []

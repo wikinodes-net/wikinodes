@@ -5,23 +5,23 @@
   "scripts": {
     "dev": "svelte-kit dev --port ${PORT:-3000}",
     "build": "svelte-kit build",
-    "preview": "svelte-kit preview",
+    "preview": "http-server -p 8888 build",
     "check": "svelte-check --fail-on-warnings --tsconfig ./tsconfig.json",
     "check:watch": "yarn check --watch",
     "lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
     "format": "prettier --write --plugin-search-dir=. .",
     "sort": "sort-package-json"
   },
-  "dependencies": {
-    "buffer": "^6.0.3"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@sveltejs/adapter-static": "^1.0.0-next.17",
     "@sveltejs/kit": "next",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-svelte3": "^3.2.0",
+    "http-server": "^13.0.1",
     "prettier": "~2.3.2",
     "prettier-plugin-svelte": "^2.3.1",
     "sort-package-json": "^1.50.0",
