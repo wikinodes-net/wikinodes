@@ -42,28 +42,52 @@ const ad4mClient = new Ad4mClient(apolloClient);
   }
 
   const languages = await ad4mClient.languages.all();
-  console.log({ languages });
+  // log({ languages });
 
-  const socialContextLanguage = languages.find(
-    (l) => l.name === "social-context"
-    // (l) => l.address === 'QmRfneighvZs6wc1fat2wNu2qVHddZDE7fcTRcVnsKa2ra'
+  const language = languages.find(
+    (l) => l.name === "note-ipfs"
+    // (l) => l.name === "social-context"
+  )?.address;
+  if (!language) throw new Error();
+  log({ language });
+
+  const funderMuskAddress = await ad4mClient.expression.create(
+    "Musk Foundation",
+    language
+
   );
-  if (!socialContextLanguage) throw new Error();
-  log({ socialContextLanguage });
+  log({ funderMuskAddress });
 
-  const perspective = await ad4mClient.perspective.add("My new space");
-  const createNeighbourhood =
-    await ad4mClient.neighbourhood.publishFromPerspective(
-      perspective.uuid,
-      socialContextLanguage.address,
-      new Perspective()
-    );
+  let treeOfLifePerspective;
+  treeOfLifePerspective = await ad4mClient.perspective.add(
+    "Tree of Life"
+  );
+  log({treeOfLifePerspective})
 
-//     const addLink = await ad4mClient.perspective.addLink(perspective.uuid, {source: someExpressionAddress, target: someExpressionAddress2, predicate: 'p'})
-// const getLinks = await ad4mClient.perspective.queryLinks(perspective.uuid, {source: someExpressionAddress, predicate: ''p})
+  const fundingEventMuskAddress = await ad4mClient.expression.create(
+    "FundingEvent:Musk2022",
+    language
+  );
+  log({ fundingEventMuskAddress });
+
+  await ad4mClient.perspective.addLink(
+    treeOfLifePerspective.uuid,
+    new Link({
+      source: funderMuskAddress,
+      predicate: 'has funding event',
+      target: fundingEventMuskAddress,
+    })
+  );
+
+  let links;
+  links = await ad4mClient.perspective.queryLinks(
+    treeOfLifePerspective.uuid,
+    new LinkQuery({})
+  );
+  log({ links });
 
 })();
 
-function log(arg: object | string) {
+function log(arg: object|string) {
   console.log(JSON.stringify(arg, null, 4));
 }
