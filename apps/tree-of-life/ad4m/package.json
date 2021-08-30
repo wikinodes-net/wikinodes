@@ -10,8 +10,9 @@
   "scripts": {
     "ad4m-executor": "ad4m serve",
     "dev": "ts-node index.ts",
+    "dev2": "ts-node spike-social-context.ts",
     "dev:full": "npm run ad4m-executor && npm run dev",
-    "clean": "rm -rf \"~/Library/Application Support/ad4m\"",
+    "clean": "rm -rf ~/Library/Application\\ Support/ad4m",
     "sort": "sort-package-json"
   },
   "dependencies": {
