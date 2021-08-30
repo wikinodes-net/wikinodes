@@ -54,7 +54,6 @@ const ad4mClient = new Ad4mClient(apolloClient);
   const funderMuskAddress = await ad4mClient.expression.create(
     "Musk Foundation",
     language
-
   );
   log({ funderMuskAddress });
 
