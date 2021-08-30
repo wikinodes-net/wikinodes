@@ -4,22 +4,6 @@ import { ApolloClient, ApolloLink, InMemoryCache } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import ws from "ws";
 
-// class Foo {
-//   static hasManyAssociations = new Set();
-
-//   constructor(attrs: object) {
-//     console.log(this.constructor.name);
-//     console.log(this.constructor);
-//     console.log(Foo.hasManyAssociations)
-//     console.log(Bar.hasManyAssociations)
-//     console.log((this.constructor as any).hasManyAssociations)
-//   }
-// }
-
-// class Bar extends Foo {}
-
-// const bar = new Bar({});
-
 const uri = "http://localhost:4000/graphql";
 const apolloClient = new ApolloClient({
   link: new WebSocketLink({
@@ -106,7 +90,7 @@ async function main() {
 // user code above, lib code below
 
 abstract class Ad4mModel {
-  static hasManyAssociations = new Set();
+  protected static hasManyAssociations: any = {}
 
   constructor(attrs: object) {
     console.log({'this.constructor.name': this.constructor.name});
@@ -117,16 +101,16 @@ abstract class Ad4mModel {
   }
 
   private createHasManyAssociations() {
-    log((this.constructor as any).hasManyAssociations);
-    log((this.constructor as any).hasManyAssociations);
-    const otherModelNames: Array<string> = (this.constructor as any).hasManyAssociations;
+    log({'Ad4mModel.hasManyAssociations in createHasManyAssociations': (this.constructor as any).hasManyAssociations});
+    const otherModelNames: Array<string> = Ad4mModel.hasManyAssociations[this.constructor.name];
+    log({otherModelNames});
     for (const otherModelName in otherModelNames) {
       if ((this as any)[otherModelName]) {
         throw new Error(
           `Already exists: <instance>${this.constructor.name}[${otherModelName}]`
         );
       }
-      // log({otherModelName});
+      log({otherModelName});
       (this as any)[otherModelName] = new Ad4mAssociationHasMany(
         this.constructor.name,
         otherModelName
@@ -140,8 +124,11 @@ abstract class Ad4mModel {
   }
 
   static hasMany(otherModelName: string): void {
-    (this as any).hasManyAssociations.add(otherModelName);
-    console.log((this as any).hasManyAssociations);
+    if (!Ad4mModel.hasManyAssociations[this.name] ){
+      Ad4mModel.hasManyAssociations[this.name] = new Set()
+    }
+    Ad4mModel.hasManyAssociations[this.name].add(otherModelName)
+    console.log({'Ad4mModel.hasManyAssociations in .hasMany': Ad4mModel.hasManyAssociations})
   }
 }
 
