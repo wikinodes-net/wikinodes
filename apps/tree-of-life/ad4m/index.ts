@@ -78,13 +78,28 @@ async function main() {
   // relationships - use as predicates
   // has many through - rich predicates?
 
-  class Funder extends Ad4mModel {
-    // static name: string
-  }
-  Funder.register();
-  Funder.hasMany("FundingEvent");
+  // class Funder extends Ad4mModel {
+  //   // static name: string
+  // }
+  // Funder.register();
+  // Funder.hasMany("FundingEvent");
 
-  class FundingEvent extends Ad4mModel {}
+  //
+
+  // type FunderAttrs = {
+  //   name: string
+  // }
+
+  // type FunderClass = (object) => FunderAttrs
+
+  const Funder: Funder = Ad4mModel.create(
+    'Funder',
+    associations: [
+      [Ad4mAssociationHasMany, 'FundingEvent']
+    ]
+  }
+
+  // class FundingEvent extends Ad4mModel {}
 
   // Generic sketch:
   // type FundingEventFields =
@@ -106,28 +121,32 @@ async function main() {
 // user code above, lib code below
 
 abstract class Ad4mModel {
-  static hasManyAssociations = new Set();
+  // static hasManyAssociations = new Set();
 
-  constructor(attrs: object) {
-    console.log({'this.constructor.name': this.constructor.name});
-
-    // TODO create model as expression in ad4m
-
-    this.createHasManyAssociations();
+  constructor(){
+        // TODO create model as expression in ad4m
   }
 
-  private createHasManyAssociations() {
-    log((this.constructor as any).hasManyAssociations);
-    log((this.constructor as any).hasManyAssociations);
-    const otherModelNames: Array<string> = (this.constructor as any).hasManyAssociations;
-    for (const otherModelName in otherModelNames) {
-      if ((this as any)[otherModelName]) {
+  static create(name: string, {attrs, associations}: object) {
+
+    const modelClass = class {}
+
+    const hasManyAssociations = associations.filter(([associationType, _]) => {
+      return associationType === Ad4mAssociationHasMany
+    })
+    this.createHasManyAssociations(modelClass, hasManyAssociations);
+  }
+
+  static createHasManyAssociations(modelClass, hasManyAssociations) {
+    // const otherModelNames: Array<string> = (this.constructor as any).hasManyAssociations;
+    for (const [_accosciationType, otherModelName] in hasManyAssociations) {
+      if (modelClass.prototype[otherModelName]) {
         throw new Error(
-          `Already exists: <instance>${this.constructor.name}[${otherModelName}]`
+          `Already exists: <instance>${modelClass.constructor.name}[${otherModelName}]`
         );
       }
       // log({otherModelName});
-      (this as any)[otherModelName] = new Ad4mAssociationHasMany(
+      modelClass.prototype[otherModelName] = new Ad4mAssociationHasMany(
         this.constructor.name,
         otherModelName
       );
