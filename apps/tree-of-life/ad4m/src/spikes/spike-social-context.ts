@@ -49,14 +49,19 @@ const ad4mClient = new Ad4mClient(apolloClient);
   //   // (l) => l.address === 'QmRfneighvZs6wc1fat2wNu2qVHddZDE7fcTRcVnsKa2ra'
   // );
 
-  const socialContextLanguage = await ad4mClient.languages.cloneHolochainTemplate("/Users/harlan/code/perspect3vism/ad4m-cli/src/builtin-langs/social-context", "social-context", "b98e53a8-5800-47b6-adb9-86d55a74871f");
+  const socialContextLanguage =
+    await ad4mClient.languages.cloneHolochainTemplate(
+      "/Users/harlan/code/perspect3vism/ad4m-cli/src/builtin-langs/social-context",
+      "social-context",
+      Math.random().toString()
+    );
 
   if (!socialContextLanguage) throw new Error();
   log({ socialContextLanguage });
 
   const perspective = await ad4mClient.perspective.add("My new space");
 
-  log({perspective})
+  log({ perspective });
 
   const createNeighbourhood =
     await ad4mClient.neighbourhood.publishFromPerspective(
@@ -65,31 +70,30 @@ const ad4mClient = new Ad4mClient(apolloClient);
       new Perspective()
     );
 
-    log({createNeighbourhood})
+  log({ createNeighbourhood });
 
-  // crashing:
-  // const funderMuskAddress = await ad4mClient.expression.create(
-  //   "Musk Foundation",
-  //   socialContextLanguage.address
-  // );
-  // log({ funderMuskAddress });
+  const funderMuskAddress = await ad4mClient.expression.create(
+    "Musk Foundation",
+    socialContextLanguage.address
+  );
+  log({ funderMuskAddress });
 
-  // const fundingEventMuskAddress = await ad4mClient.expression.create(
-  //   "FundingEvent:Musk2022",
-  //   socialContextLanguage.address
-  // );
-  // log({ fundingEventMuskAddress });
+  const fundingEventMuskAddress = await ad4mClient.expression.create(
+    "FundingEvent:Musk2022",
+    socialContextLanguage.address
+  );
+  log({ fundingEventMuskAddress });
 
-  // const addLink = await ad4mClient.perspective.addLink(perspective.uuid, {
-  //   source: funderMuskAddress,
-  //   predicate: "has funding event",
-  //   target: fundingEventMuskAddress,
-  // });
+  const addLink = await ad4mClient.perspective.addLink(perspective.uuid, {
+    source: funderMuskAddress,
+    predicate: "has funding event",
+    target: fundingEventMuskAddress,
+  });
 
-  // const getLinks = await ad4mClient.perspective.queryLinks(
-  //   perspective.uuid,
-  //   new LinkQuery({})
-  // );
+  const getLinks = await ad4mClient.perspective.queryLinks(
+    perspective.uuid,
+    new LinkQuery({})
+  );
 
   //end of main
 })();

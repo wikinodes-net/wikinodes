@@ -1,5 +1,5 @@
 import { Ad4mAssociationHasMany } from "./Ad4mAssociationHasMany";
-import { Ad4mModelRegistry } from "./Ad4mModelRegistry";
+import { Ad4mRegistry } from "./Ad4mRegistry";
 export abstract class Ad4mModel {
   protected static hasManyAssociations: any = {}
 
@@ -28,7 +28,7 @@ export abstract class Ad4mModel {
 
   // TODO move into constructor
   static register() {
-    Ad4mModelRegistry.set(this.name, this);
+    Ad4mRegistry.set(this.name, this);
   }
 
   static hasMany(otherModelName: string): void {

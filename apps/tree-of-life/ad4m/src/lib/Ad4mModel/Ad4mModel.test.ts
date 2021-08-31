@@ -6,10 +6,6 @@ describe("Ad4mModel", () => {
       class Funder extends Ad4mModel {}
       Funder.register();
       Funder.hasMany("FundingEvent");
-      // expect(Ad4mModel.hasManyAssociations).toHaveProperty(
-      //   "Funder",
-      //   new Set(["FundingEvent"])
-      // );
 
       class FundingEvent extends Ad4mModel {}
       FundingEvent.register();
