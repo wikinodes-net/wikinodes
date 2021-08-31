@@ -4,7 +4,7 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 import ws from "ws";
 
 import { Ad4mModel } from "./Ad4mModel";
-import { Ad4mRegistry } from "./Ad4mRegistry";
+import { Ad4m } from "./Ad4m";
 
 describe("Ad4mModel", () => {
   describe('with "has many" association', () => {
@@ -13,9 +13,10 @@ describe("Ad4mModel", () => {
 
     beforeAll(async () => {
       ad4mClient = await initAd4m();
-      Ad4mRegistry.expressionLanguage = await noteIpfsLanguage(ad4mClient);
+      (Ad4m as any).expressionLanguage = await noteIpfsLanguage(ad4mClient);
     });
-    it("xxx", () => {
+
+    it("xxx", async () => {
       class Funder extends Ad4mModel {}
       Funder.register();
       Funder.hasMany("FundingEvent");
@@ -23,9 +24,11 @@ describe("Ad4mModel", () => {
       class FundingEvent extends Ad4mModel {}
       FundingEvent.register();
 
-      const musk: any = new Funder({});
-      expect(musk.FundingEvent).toBeTruthy();
-      musk.FundingEvent.create({ name: "Musk Foundation 2022" });
+      const musk: any = await Funder.create({});
+      // expect(musk.FundingEvent).toBeTruthy();
+      // musk.FundingEvent.create({ name: "Musk Foundation 2022" });
+      // console.log({musk})
+      const association = await musk.create(FundingEvent, { name: "Musk Foundation 2022" });
     });
   });
 });
@@ -79,5 +82,5 @@ async function noteIpfsLanguage(ad4mClient) {
 }
 
 function log(arg: object | string) {
-  console.log(JSON.stringify(arg, null, 4));
+  // console.log(JSON.stringify(arg, null, 4));
 }

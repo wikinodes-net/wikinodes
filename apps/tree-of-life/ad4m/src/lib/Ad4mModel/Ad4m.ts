@@ -1,4 +1,5 @@
-export class Ad4mRegistry {
+export class Ad4m {
+  static client
   static expressionLanguage
 
   static map: any = {};
