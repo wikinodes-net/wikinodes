@@ -1,4 +1,5 @@
-class Ad4mAssociationHasMany {
+import { Ad4mModelRegistry } from "./Ad4mModelRegistry";
+export class Ad4mAssociationHasMany {
   constructor(private thisModelName: string, private otherModelName: string) {}
 
   create(attrs: object) {

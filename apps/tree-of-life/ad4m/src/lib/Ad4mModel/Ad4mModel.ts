@@ -1,25 +1,24 @@
-abstract class Ad4mModel {
+import { Ad4mAssociationHasMany } from "./Ad4mAssociationHasMany";
+import { Ad4mModelRegistry } from "./Ad4mModelRegistry";
+export abstract class Ad4mModel {
   protected static hasManyAssociations: any = {}
 
   constructor(attrs: object) {
-    console.log({'this.constructor.name': this.constructor.name});
-
     // TODO create model as expression in ad4m
-
     this.createHasManyAssociations();
   }
 
   private createHasManyAssociations() {
-    log({'Ad4mModel.hasManyAssociations in createHasManyAssociations': (this.constructor as any).hasManyAssociations});
+    // console.log({'Ad4mModel.hasManyAssociations in createHasManyAssociations': (this.constructor as any).hasManyAssociations});
     const otherModelNames: Array<string> = Ad4mModel.hasManyAssociations[this.constructor.name];
-    log({otherModelNames});
-    for (const otherModelName in otherModelNames) {
+    // console.log({otherModelNames});
+    for (const otherModelName of otherModelNames) {
+      // console.log({otherModelName});
       if ((this as any)[otherModelName]) {
         throw new Error(
           `Already exists: <instance>${this.constructor.name}[${otherModelName}]`
         );
       }
-      log({otherModelName});
       (this as any)[otherModelName] = new Ad4mAssociationHasMany(
         this.constructor.name,
         otherModelName
@@ -37,6 +36,5 @@ abstract class Ad4mModel {
       Ad4mModel.hasManyAssociations[this.name] = new Set()
     }
     Ad4mModel.hasManyAssociations[this.name].add(otherModelName)
-    console.log({'Ad4mModel.hasManyAssociations in .hasMany': Ad4mModel.hasManyAssociations})
   }
 }

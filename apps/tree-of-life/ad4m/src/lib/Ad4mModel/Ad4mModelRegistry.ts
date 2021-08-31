@@ -1,4 +1,4 @@
-class Ad4mModelRegistry {
+export class Ad4mModelRegistry {
   static map: any = {};
   static set(modelName: string, model: object): void {
     this.map[modelName] = model;

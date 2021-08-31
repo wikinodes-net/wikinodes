@@ -14,12 +14,12 @@
     "dev:full": "npm run ad4m-executor && npm run dev",
     "clean": "rm -rf ~/Library/Application\\ Support/ad4m",
     "sort": "sort-package-json",
-    "test": "jest --forceExit"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@apollo/client": "3.3.20",
     "@perspect3vism/ad4m": "^0.1.7",
-    "sort-package-json": "^1.50.0",
     "subscriptions-transport-ws": "^0.9.19",
     "ts-node": "^10.2.1"
   },
@@ -27,6 +27,7 @@
     "@types/jest": "^27.0.1",
     "@types/mocha": "^9.0.0",
     "jest": "^27.1.0",
+    "sort-package-json": "^1.50.0",
     "ts-jest": "^27.0.5"
   }
 }
