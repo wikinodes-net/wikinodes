@@ -1,4 +1,6 @@
 export class Ad4mRegistry {
+  static expressionLanguage
+
   static map: any = {};
   static set(modelName: string, model: object): void {
     this.map[modelName] = model;
