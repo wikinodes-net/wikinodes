@@ -16,6 +16,9 @@ export class Ad4mModel {
   }
 
   private async createExpression(attrs: object) {
+    if (attrs["type"]) throw new Error // TODO
+    attrs["type"] = this.constructor.name
+
     this.expressionAddress = await Ad4mModel.client.expression.create(
       attrs,
       Ad4mModel.defaultExpressionLanguage.address
