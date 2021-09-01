@@ -14,7 +14,6 @@ describe("Ad4mModel", () => {
       class FundingEvent extends Ad4mModel {}
 
       const musk: any = await Funder.create({ name: "Musk" });
-
       const muskExpression = await Ad4m.client.expression.get(
         musk.expressionAddress
       );
@@ -28,13 +27,10 @@ describe("Ad4mModel", () => {
 
       expect(links).toHaveLength(1);
       expect(links[0]["data"]).toMatchObject({
-        source: expect.anything(),
+        source: musk.expressionAddress,
         predicate: "has",
-        target: expect.anything(),
+        target: fundingEvent.expressionAddress,
       });
     });
   });
 });
-
-// +     "source": "Qmd6AZzLjfGWNAqWLGTGy354JC1bK26XNf7rTEEsJfv7Fe://QmQygoYTxUzAobKdPyQaVdKZwoKGH3TsJrFHRa46Ybmnra",
-// +     "target": "Qmd6AZzLjfGWNAqWLGTGy354JC1bK26XNf7rTEEsJfv7Fe://QmUmRK4p6YKuQ8x7p2ABU43Gn5RbZ6PB6WPSNfMxmsvR96",
