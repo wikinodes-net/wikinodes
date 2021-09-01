@@ -85,6 +85,13 @@ export class Ad4m {
       new Link({ source, predicate, target })
     );
   }
+
+  static async queryLinks(queryParams = {}) {
+    return await this.client.perspective.queryLinks(
+      this.perspective.uuid,
+      new LinkQuery(queryParams)
+    );
+  }
 }
 
 function log(arg: object | string) {
