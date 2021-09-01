@@ -21,7 +21,17 @@ describe("Ad4mModel", () => {
 
       const fundingEvent = await musk.create(FundingEvent, {
         name: "Musk Foundation 2022",
+        totalBudget: 22_000_000,
       });
+      const fundingEventExpression = await Ad4m.client.expression.get(
+        fundingEvent.expressionAddress
+      );
+      expect(fundingEventExpression.data).toBe(
+        JSON.stringify({
+          name: "Musk Foundation 2022",
+          totalBudget: 22_000_000,
+        })
+      );
 
       const links = await Ad4m.queryLinks();
 
