@@ -18,7 +18,7 @@ export class Ad4mModel {
 
   private async createExpression(attrs: object) {
     this.expressionAddress = await Ad4m.client.expression.create(
-      JSON.stringify(attrs),
+      attrs,
       Ad4m.expressionLanguageAddress
     );
   }

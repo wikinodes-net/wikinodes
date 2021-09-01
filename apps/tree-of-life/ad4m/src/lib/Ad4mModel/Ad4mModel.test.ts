@@ -8,13 +8,17 @@ describe("Ad4mModel", () => {
       Ad4m.expressionLanguageAddress = Ad4m.languages["note-ipfs"].address;
     });
 
-    it("xxx", async () => {
+    it("scratchpad", async () => {
       class Funder extends Ad4mModel {}
       Funder.hasMany("FundingEvent");
       class FundingEvent extends Ad4mModel {}
 
-      const musk: any = await Funder.create({});
-      const fudingEvent = await musk.create(FundingEvent, {
+      const musk: any = await Funder.create({name: 'Musk'});
+
+      const muskExpression = await Ad4m.client.expression.get(musk.expressionAddress)
+      expect(muskExpression.data).toBe(JSON.stringify({name: 'Musk'}))
+
+      const fundingEvent = await musk.create(FundingEvent, {
         name: "Musk Foundation 2022",
       });
 
@@ -30,3 +34,6 @@ describe("Ad4mModel", () => {
     });
   });
 });
+
+// +     "source": "Qmd6AZzLjfGWNAqWLGTGy354JC1bK26XNf7rTEEsJfv7Fe://QmQygoYTxUzAobKdPyQaVdKZwoKGH3TsJrFHRa46Ybmnra",
+// +     "target": "Qmd6AZzLjfGWNAqWLGTGy354JC1bK26XNf7rTEEsJfv7Fe://QmUmRK4p6YKuQ8x7p2ABU43Gn5RbZ6PB6WPSNfMxmsvR96",
