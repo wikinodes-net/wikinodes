@@ -7,7 +7,8 @@ export class Ad4m {
   static client;
   // static expressionLanguage;
   static expressionLanguageAddress;
-  static languages: object
+  static languages: object;
+  static perspective;
 
   // static map: any = {};
   // static set(modelName: string, model: object): void {
@@ -19,7 +20,14 @@ export class Ad4m {
   //   return this.map[modelName];
   // }
 
-  static async init(): Promise<void> {
+  static async init({ perspectiveName }): Promise<void> {
+    Ad4m.initClient();
+    await Ad4m.loginOrCreateDid();
+    await Ad4m.setLanguages();
+    await Ad4m.setPerspective(perspectiveName);
+  }
+
+  private static initClient() {
     const uri = "http://localhost:4000/graphql";
     const apolloClient = new ApolloClient({
       link: new WebSocketLink({
@@ -35,7 +43,9 @@ export class Ad4m {
     });
 
     this.client = new Ad4mClient(apolloClient);
+  }
 
+  private static async loginOrCreateDid() {
     let isInitialized, isUnlocked, did, result;
 
     result = await this.client.agent.status();
@@ -55,14 +65,26 @@ export class Ad4m {
       did = result.did;
       log({ isUnlocked, did });
     }
+  }
 
+  private static async setLanguages() {
     const languages = await this.client.languages.all();
-    this.languages = {}
+    this.languages = {};
     for (const language of languages) {
-      this.languages[language.name] = language
+      this.languages[language.name] = language;
     }
   }
 
+  private static async setPerspective(perspectiveName: any) {
+    this.perspective = await this.client.perspective.add(perspectiveName);
+  }
+
+  static async addLink({ source, predicate, target }) {
+    await this.client.perspective.addLink(
+      this.perspective.uuid,
+      new Link({ source, predicate, target })
+    );
+  }
 }
 
 function log(arg: object | string) {

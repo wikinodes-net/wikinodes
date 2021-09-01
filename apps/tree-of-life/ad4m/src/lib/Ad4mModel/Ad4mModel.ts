@@ -5,19 +5,19 @@ import { Ad4m } from "./Ad4m";
 export class Ad4mModel {
   protected static hasManyAssociations: any = {};
 
-  private expression;
+  private expressionAddress;
 
   // constructor() {}
 
   static async create(attrs: object) {
-    const model = new this(); // instantiate the inheriting class
+    const model = new this(); // instance of inheriting class
     await model.createExpression(attrs);
     // this.createHasManyAssociations();
     return model;
   }
 
   private async createExpression(attrs: object) {
-    this.expression = await Ad4m.client.expression.create(
+    this.expressionAddress = await Ad4m.client.expression.create(
       JSON.stringify(attrs),
       Ad4m.expressionLanguageAddress
     );
@@ -42,32 +42,19 @@ export class Ad4mModel {
         `Missing association: ${this.constructor.name} hasMany ${otherModelClass.name}`
       );
     }
+
+    const otherModel = await otherModelClass.create(otherModelAttrs);
+
+    await Ad4m.addLink({
+      source: this.expressionAddress,
+      predicate: "has",
+      target: otherModel.expressionAddress,
+    });
+
+    return otherModel;
+
     // create new model
     // create association between them
-  }
-
-  // private static createHasManyAssociations() {
-  //   // console.log({'Ad4mModel.hasManyAssociations in createHasManyAssociations': (this.constructor as any).hasManyAssociations});
-  //   const otherModelNames: Array<string> =
-  //     Ad4mModel.hasManyAssociations[this.constructor.name];
-  //   // console.log({otherModelNames});
-  //   for (const otherModelName of otherModelNames) {
-  //     // console.log({otherModelName});
-  //     if ((this as any)[otherModelName]) {
-  //       throw new Error(
-  //         `Already exists: <instance>${this.constructor.name}[${otherModelName}]`
-  //       );
-  //     }
-  //     (this as any)[otherModelName] = new Ad4mAssociationHasMany(
-  //       this.constructor.name,
-  //       otherModelName
-  //     );
-  //   }
-  // }
-
-  // TODO move into constructor
-  static register() {
-    // Ad4m.set(this.name, this);
   }
 
   static hasMany(otherModelName: string): void {
