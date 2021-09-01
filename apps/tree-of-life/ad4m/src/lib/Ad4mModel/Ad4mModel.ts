@@ -1,4 +1,4 @@
-import { Link, LinkQuery, Perspective } from "@perspect3vism/ad4m";
+import { Link, LinkQuery, PerspectiveHandle } from "@perspect3vism/ad4m";
 
 export class Ad4mModel {
   static client;
@@ -62,9 +62,12 @@ export class Ad4mModel {
     Ad4mModel.hasManyAssociations[this.name].add(otherModelName);
   }
 
-  async find(model, options: any = {}) {
+  async find(
+    model: Ad4mModel,
+    options: { queryParams?: object; perspective?: PerspectiveHandle } = {}
+  ) {
     const queryParams = options.queryParams ? options.queryParams : {};
-    const perspective = options.perspective
+    const perspective: PerspectiveHandle = options.perspective
       ? options.perspective
       : Ad4mModel.defaultPerspective;
     // TODO assert perspective
