@@ -4,8 +4,13 @@ import { Ad4m } from "./Ad4m";
 describe("Ad4mModel", () => {
   describe('with "has many" association', () => {
     beforeAll(async () => {
-      await Ad4m.init({ perspectiveName: "Tree of Life" });
-      Ad4m.expressionLanguageAddress = Ad4m.languages["note-ipfs"].address;
+      await Ad4m.init({
+        perspectiveName: "Tree of Life",
+        defaultExpressionLanguage: "note-ipfs"
+       });
+      Ad4mModel.client = Ad4m.client
+      Ad4mModel.defaultPerspective = Ad4m.perspective
+      Ad4mModel.defaultExpressionLanguage = Ad4m.defaultExpressionLanguage
     });
 
     it("scratchpad", async () => {

@@ -5,15 +5,16 @@ import ws from "ws";
 
 export class Ad4m {
   static client;
-  static expressionLanguageAddress;
+  static defaultExpressionLanguage;
   static languages: object;
   static perspective;
 
-  static async init({ perspectiveName }): Promise<void> {
-    Ad4m.initClient();
-    await Ad4m.loginOrCreateDid();
-    await Ad4m.setLanguages();
-    await Ad4m.setPerspective(perspectiveName);
+  static async init({ perspectiveName, defaultExpressionLanguage }): Promise<void> {
+    this.initClient();
+    await this.loginOrCreateDid();
+    await this.setLanguages();
+    await this.setPerspective(perspectiveName);
+    this.defaultExpressionLanguage = this.languages[defaultExpressionLanguage];
   }
 
   private static initClient() {
@@ -68,13 +69,7 @@ export class Ad4m {
     this.perspective = await this.client.perspective.add(perspectiveName);
   }
 
-  static async addLink({ source, predicate, target }) {
-    await this.client.perspective.addLink(
-      this.perspective.uuid,
-      new Link({ source, predicate, target })
-    );
-  }
-
+  // todo move to Ad4mModel#find
   static async queryLinks(queryParams = {}) {
     return await this.client.perspective.queryLinks(
       this.perspective.uuid,

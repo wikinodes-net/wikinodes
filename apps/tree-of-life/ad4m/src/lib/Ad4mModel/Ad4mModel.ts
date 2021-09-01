@@ -1,6 +1,10 @@
-import { Ad4m } from "./Ad4m";
+import { Link, LinkQuery, Perspective } from "@perspect3vism/ad4m";
 
 export class Ad4mModel {
+  static client;
+  static defaultPerspective;
+  static defaultExpressionLanguage;
+
   protected static hasManyAssociations: any = {};
 
   private expressionAddress;
@@ -12,9 +16,9 @@ export class Ad4mModel {
   }
 
   private async createExpression(attrs: object) {
-    this.expressionAddress = await Ad4m.client.expression.create(
+    this.expressionAddress = await Ad4mModel.client.expression.create(
       attrs,
-      Ad4m.expressionLanguageAddress
+      Ad4mModel.defaultExpressionLanguage.address
     );
   }
 
@@ -36,11 +40,14 @@ export class Ad4mModel {
 
     const otherModel = await otherModelClass.create(otherModelAttrs);
 
-    await Ad4m.addLink({
-      source: this.expressionAddress,
-      predicate: "has",
-      target: otherModel.expressionAddress,
-    });
+    await Ad4mModel.client.perspective.addLink(
+      Ad4mModel.defaultPerspective.uuid,
+      new Link({
+        source: this.expressionAddress,
+        predicate: "has",
+        target: otherModel.expressionAddress,
+      })
+    );
 
     return otherModel;
   }
@@ -51,4 +58,13 @@ export class Ad4mModel {
     }
     Ad4mModel.hasManyAssociations[this.name].add(otherModelName);
   }
+
+  // // TODO
+  // async find(queryParams = {}) {
+  //   // TODO merge subject = self
+  //   return await this.client.perspective.queryLinks(
+  //     this.perspective.uuid,
+  //     new LinkQuery(queryParams)
+  //   );
+  // }
 }
