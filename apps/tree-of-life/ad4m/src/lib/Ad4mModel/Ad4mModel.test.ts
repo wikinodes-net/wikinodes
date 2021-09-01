@@ -13,10 +13,12 @@ describe("Ad4mModel", () => {
       Funder.hasMany("FundingEvent");
       class FundingEvent extends Ad4mModel {}
 
-      const musk: any = await Funder.create({name: 'Musk'});
+      const musk: any = await Funder.create({ name: "Musk" });
 
-      const muskExpression = await Ad4m.client.expression.get(musk.expressionAddress)
-      expect(muskExpression.data).toBe(JSON.stringify({name: 'Musk'}))
+      const muskExpression = await Ad4m.client.expression.get(
+        musk.expressionAddress
+      );
+      expect(muskExpression.data).toBe(JSON.stringify({ name: "Musk" }));
 
       const fundingEvent = await musk.create(FundingEvent, {
         name: "Musk Foundation 2022",
@@ -24,13 +26,12 @@ describe("Ad4mModel", () => {
 
       const links = await Ad4m.queryLinks();
 
-      expect(links).toHaveLength(1)
-      expect(links[0]['data']).toMatchObject({
+      expect(links).toHaveLength(1);
+      expect(links[0]["data"]).toMatchObject({
         source: expect.anything(),
-        predicate: 'has',
-        target: expect.anything()
-      })
-
+        predicate: "has",
+        target: expect.anything(),
+      });
     });
   });
 });
