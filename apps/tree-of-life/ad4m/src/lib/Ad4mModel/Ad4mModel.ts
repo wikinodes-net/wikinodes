@@ -16,8 +16,8 @@ export class Ad4mModel {
   }
 
   private async createExpression(attrs: object) {
-    if (attrs["type"]) throw new Error // TODO
-    attrs["type"] = this.constructor.name
+    if (attrs["type"]) throw new Error(); // TODO
+    attrs["type"] = this.constructor.name;
 
     this.expressionAddress = await Ad4mModel.client.expression.create(
       attrs,
@@ -62,12 +62,17 @@ export class Ad4mModel {
     Ad4mModel.hasManyAssociations[this.name].add(otherModelName);
   }
 
-  // // TODO
-  // async find(queryParams = {}) {
-  //   // TODO merge subject = self
-  //   return await this.client.perspective.queryLinks(
-  //     this.perspective.uuid,
-  //     new LinkQuery(queryParams)
-  //   );
-  // }
+  async find(model, options: any = {}) {
+    const queryParams = options.queryParams ? options.queryParams : {};
+    const perspective = options.perspective
+      ? options.perspective
+      : Ad4mModel.defaultPerspective;
+    // TODO assert perspective
+    // TODO merge subject = self
+    // TODO limit target to model
+    return await Ad4mModel.client.perspective.queryLinks(
+      perspective.uuid,
+      new LinkQuery(queryParams)
+    );
+  }
 }

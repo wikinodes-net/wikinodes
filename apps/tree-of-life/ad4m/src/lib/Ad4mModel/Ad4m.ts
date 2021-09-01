@@ -9,7 +9,10 @@ export class Ad4m {
   static languages: object;
   static perspective;
 
-  static async init({ perspectiveName, defaultExpressionLanguage }): Promise<void> {
+  static async init({
+    perspectiveName,
+    defaultExpressionLanguage,
+  }): Promise<void> {
     this.initClient();
     await this.loginOrCreateDid();
     await this.setLanguages();
@@ -67,14 +70,6 @@ export class Ad4m {
 
   private static async setPerspective(perspectiveName: any) {
     this.perspective = await this.client.perspective.add(perspectiveName);
-  }
-
-  // todo move to Ad4mModel#find
-  static async queryLinks(queryParams = {}) {
-    return await this.client.perspective.queryLinks(
-      this.perspective.uuid,
-      new LinkQuery(queryParams)
-    );
   }
 }
 

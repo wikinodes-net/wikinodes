@@ -43,9 +43,7 @@ describe("Ad4mModel", () => {
         })
       );
 
-      const links = await Ad4m.queryLinks();
-      // TODO:
-      // const links = await musk.find("FundingEvent");
+      const links = await musk.find(FundingEvent);
 
       expect(links).toHaveLength(1);
       expect(links[0]["data"]).toMatchObject({
