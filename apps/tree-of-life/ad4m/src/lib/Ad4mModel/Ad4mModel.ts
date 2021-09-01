@@ -10,22 +10,37 @@ export class Ad4mModel {
   // constructor() {}
 
   static async create(attrs: object) {
-    const model = new Ad4mModel()
+    const model = new this(); // instantiate the inheriting class
     await model.createExpression(attrs);
     // this.createHasManyAssociations();
-    return model
+    return model;
   }
 
   private async createExpression(attrs: object) {
     this.expression = await Ad4m.client.expression.create(
       JSON.stringify(attrs),
-      Ad4m.expressionLanguage
+      Ad4m.expressionLanguageAddress
     );
   }
 
-   async create(otherModelClass: any, otherModelAttrs: object) {
-    if (!(otherModelClass.name in Ad4mModel.hasManyAssociations[this.constructor.name])){
-      throw new Error("xxxxx")
+  async create(otherModelClass: any, otherModelAttrs: object) {
+    // console.log(Ad4mModel.hasManyAssociations);
+    // console.log(this.constructor.name);
+    if (!Ad4mModel.hasManyAssociations[this.constructor.name]) {
+      throw new Error(
+        `Missing association: ${this.constructor.name} hasMany ${otherModelClass.name}`
+      );
+    }
+    // console.log(otherModelClass.name);
+    // console.log(Ad4mModel.hasManyAssociations[this.constructor.name]);
+    if (
+      !Ad4mModel.hasManyAssociations[this.constructor.name].has(
+        otherModelClass.name
+      )
+    ) {
+      throw new Error(
+        `Missing association: ${this.constructor.name} hasMany ${otherModelClass.name}`
+      );
     }
     // create new model
     // create association between them
@@ -52,7 +67,7 @@ export class Ad4mModel {
 
   // TODO move into constructor
   static register() {
-    Ad4m.set(this.name, this);
+    // Ad4m.set(this.name, this);
   }
 
   static hasMany(otherModelName: string): void {
