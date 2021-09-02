@@ -7,9 +7,7 @@
 <script lang="ts">
 </script>
 
-<h1>Home Page</h1>
-<a href="/tree-of-life/expert">Expert</a>
-<a href="/tree-of-life/budget">Budget</a>
+<h1>Expert Page</h1>
 
 <style>
 </style>
