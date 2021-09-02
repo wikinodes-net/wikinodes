@@ -1,9 +1,8 @@
 <script context="module">
-	export const ssr = false;
-	// export const hydrate = false;
-	// export const router = false;
+  export const ssr = false
+  // export const hydrate = false;
+  // export const router = false;
 </script>
-
 
 <script lang="ts">
   type FundingTarget = { name: string; funding: string; tags: string }
@@ -94,7 +93,10 @@
   }
 </script>
 
-<h1>Collaborative Budgeting</h1>
+<a href="/">
+  <img src="/static/images/Tree-of-Life-FractalFund-Logo.png" alt="Tree of Life logo" />
+</a>
+
 <p>
   You, as a recognized expert in your field of expertise, are allocating $10 million to
   organizations according to the impact you expect.

@@ -7,6 +7,10 @@
 <script lang="ts">
 </script>
 
+<a href="/">
+  <img src="/static/images/Tree-of-Life-FractalFund-Logo.png" alt="Tree of Life logo" />
+</a>
+
 <h1>Expert Page</h1>
 
 <style>
