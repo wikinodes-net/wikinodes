@@ -78,4 +78,12 @@ export class Ad4mModel {
       new LinkQuery(queryParams)
     );
   }
+
+  static async find(address) {
+    return await this.client.expression.get(address);
+  }
+
+  static async all() {
+    return await this.client.expression.get(address);
+  }
 }

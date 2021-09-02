@@ -2,19 +2,32 @@ import { Ad4mModel } from "./Ad4mModel";
 import { Ad4m } from "./Ad4m";
 
 describe("Ad4mModel", () => {
-  describe('with "has many" association', () => {
-    let client;
+  let client;
 
-    beforeAll(async () => {
-      await Ad4m.init({
-        perspectiveName: "Tree of Life",
-        defaultExpressionLanguage: "note-ipfs",
-      });
-      client = Ad4mModel.client = Ad4m.client;
-      Ad4mModel.defaultPerspective = Ad4m.perspective;
-      Ad4mModel.defaultExpressionLanguage = Ad4m.defaultExpressionLanguage;
+  beforeAll(async () => {
+    await Ad4m.init({
+      perspectiveName: "Tree of Life",
+      defaultExpressionLanguage: "note-ipfs",
     });
+    client = Ad4mModel.client = Ad4m.client;
+    Ad4mModel.defaultPerspective = Ad4m.perspective;
+    Ad4mModel.defaultExpressionLanguage = Ad4m.defaultExpressionLanguage;
+  });
 
+  describe(".find(...)", () => {
+    it("finds by address", async () => {
+      class Funder extends Ad4mModel {}
+
+      const address = await client.expression.create(
+        { type: "Funder", foo: "bar", baz: "qux" },
+        Ad4m.defaultExpressionLanguage.address
+      );
+
+      const funders = Funder.find({ address });
+    });
+  });
+
+  describe('with "has many" association', () => {
     it("scratchpad", async () => {
       class Funder extends Ad4mModel {}
       Funder.hasMany("FundingEvent");
