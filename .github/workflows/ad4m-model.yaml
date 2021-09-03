@@ -1,0 +1,36 @@
+name: ad4m-model
+
+on:
+  push:
+    paths:
+      - apps/tree-of-life/ad4m/**
+      - .github/workflows/ad4m-model.yaml
+
+defaults:
+  run:
+    working-directory: apps/tree-of-life/ad4m
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}--${{ github.workflow }}--node-modules--${{ hashFiles('ui/package-lock.json') }}
+          restore-keys: ${{ runner.os }}--${{ github.workflow }}--node-modules--
+
+      - run: npm ci # nmp install for CI env
+      - run: npm test:ci
+      # - run: npm run lint
+
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,ref,workflow,job
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_CI }}
+        if: failure()

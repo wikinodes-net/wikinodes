@@ -15,6 +15,7 @@
     "clean": "rm -rf ~/Library/Application\\ Support/ad4m",
     "sort": "sort-package-json",
     "test": "jest",
+    "test:ci": "jest --ci",
     "test:watch": "jest --watch"
   },
   "dependencies": {
