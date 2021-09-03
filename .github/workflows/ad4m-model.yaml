@@ -11,7 +11,7 @@ defaults:
     working-directory: apps/tree-of-life/ad4m
 
 jobs:
-  lint:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
           restore-keys: ${{ runner.os }}--${{ github.workflow }}--node-modules--
 
       - run: npm ci # nmp install for CI env
-      - run: npm test:ci
+      - run: npm run test:ci
       # - run: npm run lint
 
       - uses: 8398a7/action-slack@v3
