@@ -23,6 +23,9 @@ jobs:
           key: ${{ runner.os }}--${{ github.workflow }}--node-modules--${{ hashFiles('ui/package-lock.json') }}
           restore-keys: ${{ runner.os }}--${{ github.workflow }}--node-modules--
 
+      - run: npm install -g @perspect3vism/ad4m-cli
+      - run: ad4m serve &
+
       - run: npm ci # nmp install for CI env
       - run: npm run test:ci
       # - run: npm run lint
