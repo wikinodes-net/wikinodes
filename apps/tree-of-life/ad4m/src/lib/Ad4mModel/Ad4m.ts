@@ -66,6 +66,8 @@ export class Ad4m {
     for (const language of languages) {
       this.languages[language.name] = language;
     }
+    console.log({ languages });
+    console.log({ "this.languages": this.languages });
   }
 
   private static async setPerspective(perspectiveName: any) {
