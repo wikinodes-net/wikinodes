@@ -20,7 +20,6 @@ export class Ad4mModel {
 
   protected constructor() {
     // TODO assert client present
-
     this.client = Ad4mModel.client;
   }
 
@@ -44,14 +43,8 @@ export class Ad4mModel {
       // type: TYPE_MODEL_INSTANCE,
       attrs
     );
-
-    // this.expressionAddress = await this.client.expression.create(
-    //   attrs,
-    //   Ad4mModel.defaultExpressionLanguage.address
-    // );
   }
 
-  // protected static async createExpression(type: string, attrs: object = {}) {
   protected static async createExpression(attrs: object = {}): Promise<string> {
     // if (attrs["type"])
     //   throw new Error("Expression attrs cannot contain reserved key 'type'");
@@ -179,10 +172,5 @@ export class Ad4mModel {
     );
 
     return instances;
-
-    // "data": Object {
-    //   "predicate": "HAS_INSTANCE",
-    //   "source": "Qmd6AZzLjfGWNAqWLGTGy354JC1bK26XNf7rTEEsJfv7Fe://QmdmtUqnfF5LUsE9qdNGK1NvWKpwL18VdP8rdbmN6UZqD7",
-    //   "target": "Qmd6AZzLjfGWNAqWLGTGy354JC1bK26XNf7rTEEsJfv7Fe://QmYXb8qwj4gNySVaqmnoKPm78HE9wEkJZbnxAT32cUZmbq",
   }
 }
