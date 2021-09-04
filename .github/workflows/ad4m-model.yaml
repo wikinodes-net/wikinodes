@@ -43,7 +43,8 @@ jobs:
       - run: |
           git clone https://github.com/perspect3vism/ad4m-cli.git
           cd ad4m-cli
-          checkout 199982cae1bb4987a58b48fc88938f113e041994  # https://github.com/perspect3vism/ad4m-cli/pull/2
+          git fetch origin pull/2/head:fix-symlink   # https://github.com/perspect3vism/ad4m-cli/pull/2
+          git checkout fix-symlink
           npm run run serve &
 
       - run: npm ci # nmp install for CI env
