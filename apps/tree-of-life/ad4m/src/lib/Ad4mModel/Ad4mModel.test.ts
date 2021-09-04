@@ -14,58 +14,84 @@ describe("Ad4mModel", () => {
     Ad4mModel.defaultExpressionLanguage = Ad4m.defaultExpressionLanguage;
   });
 
-  describe(".find(...)", () => {
-    it("finds by address", async () => {
+  describe(".create", () => {
+    it("creates the expected expression", async () => {
       class Cat extends Ad4mModel {}
-      const attrs = { type: "Cat", fur: "grey", eyes: "blue" };
+      const cat = await Cat.create({ fur: "long" });
 
-      const address = await client.expression.create(
-        attrs,
-        Ad4m.defaultExpressionLanguage.address
-      );
+      expect(cat.expressionAddress).toBeTruthy();
 
-      const cat = await Cat.find(address);
-      expect(JSON.parse(cat.data)).toMatchObject(attrs);
+      const catExpression = await client.expression.get(cat.expressionAddress);
+
+      expect(JSON.parse(catExpression.data)).toMatchObject({ fur: "long" });
     });
   });
 
-  describe('with "has many" association', () => {
-    it("scratchpad", async () => {
-      class Funder extends Ad4mModel {}
-      Funder.hasMany("FundingEvent");
-      class FundingEvent extends Ad4mModel {}
+  // describe(".all(...)", () => {
+  //   it("finds all instances of a model", async () => {
+  //     class Dog extends Ad4mModel {}
+  //     class Cat extends Ad4mModel {}
 
-      const musk: any = await Funder.create({ name: "Musk" });
-      const muskExpression = await client.expression.get(
-        musk.expressionAddress
-      );
-      expect(muskExpression.data).toBe(
-        JSON.stringify({ name: "Musk", type: "Funder" })
-      );
+  //     const dog1 = await Dog.create({});
+  //     const dog2 = await Dog.create({});
+  //     const cat1 = await Cat.create({});
+  //     const cat2 = await Cat.create({});
 
-      const fundingEvent = await musk.create(FundingEvent, {
-        name: "Musk Foundation 2022",
-        totalBudget: 22_000_000,
-      });
-      const fundingEventExpression = await client.expression.get(
-        fundingEvent.expressionAddress
-      );
-      expect(fundingEventExpression.data).toBe(
-        JSON.stringify({
-          name: "Musk Foundation 2022",
-          totalBudget: 22_000_000,
-          type: "FundingEvent",
-        })
-      );
+  //     const dogs: Array<Ad4mModel> = await Dog.all();
+  //     const cats: Array<Ad4mModel> = await Cat.all();
 
-      const links = await musk.find(FundingEvent);
+  //     expect(dogs).toBe([dog1, dog2]);
+  //     expect(cats).toBe([cat1, cat2]);
+  //   });
+  // });
 
-      expect(links).toHaveLength(1);
-      expect(links[0]["data"]).toMatchObject({
-        source: musk.expressionAddress,
-        predicate: "has",
-        target: fundingEvent.expressionAddress,
-      });
-    });
-  });
+  // describe(".find(...)", () => {
+  //   it("finds by address", async () => {
+  //     class Funder extends Ad4mModel {}
+
+  //     const address = await client.expression.create(
+  //       { foo: "bar", baz: "qux" },
+  //       Ad4m.defaultExpressionLanguage.address
+  //     );
+
+  //     const funders = Funder.find({ address });
+  //   });
+  // });
+
+  // describe('with "has many" association', () => {
+  //   it("scratchpad", async () => {
+  //     class Funder extends Ad4mModel {}
+  //     Funder.hasMany("FundingEvent");
+  //     class FundingEvent extends Ad4mModel {}
+
+  //     const musk: any = await Funder.create({ name: "Musk" });
+  //     const muskExpression = await client.expression.get(
+  //       musk.expressionAddress
+  //     );
+  //     expect(muskExpression.data).toBe(JSON.stringify({ name: "Musk" }));
+
+  //     const fundingEvent = await musk.create(FundingEvent, {
+  //       name: "Musk Foundation 2022",
+  //       totalBudget: 22_000_000,
+  //     });
+  //     const fundingEventExpression = await client.expression.get(
+  //       fundingEvent.expressionAddress
+  //     );
+  //     expect(fundingEventExpression.data).toBe(
+  //       JSON.stringify({
+  //         name: "Musk Foundation 2022",
+  //         totalBudget: 22_000_000,
+  //       })
+  //     );
+
+  //     const links = await musk.find(FundingEvent);
+
+  //     expect(links).toHaveLength(1);
+  //     expect(links[0]["data"]).toMatchObject({
+  //       source: musk.expressionAddress,
+  //       predicate: "has",
+  //       target: fundingEvent.expressionAddress,
+  //     });
+  //   });
+  // });
 });
