@@ -23,6 +23,25 @@ jobs:
           key: ${{ runner.os }}--${{ github.workflow }}--node-modules--${{ hashFiles('ui/package-lock.json') }}
           restore-keys: ${{ runner.os }}--${{ github.workflow }}--node-modules--
 
+      - name: Set up nix
+        uses: cachix/install-nix-action@v13
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            substituters = https://cache.nixos.org/ https://perspect3vism.cachix.org https://cache.holo.host/ https://holochain.cachix.org
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= cache.holo.host-1:lNXIXtJgS9Iuw4Cu6X0HINLu9sTfcjEntnrgwMQIMcE= cache.holo.host-2:ZJCkX3AUYZ8soxTLfTb60g+F3MkWD7hkH9y8CgqwhDQ= perspect3vism.cachix.org-1:0LT3Sf7UY2OC3sUV8N5j/ne8+wRC+JItGyfv475lWco= holochain.cachix.org-1:fWOoSTrRQ8XipZim7a8LDqFAE8aqcGnG4E7G8NAJlgY=
+
+      - name: Cache nix with Cachix
+        uses: cachix/cachix-action@v10
+        with:
+          name: holochain
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - run: cat ~/.config/nix/nix.conf
+
+      - name: Prepare Nix environment
+        run: nix-shell --command "echo Completed"
+
       - run: npm install -g @perspect3vism/ad4m-cli
       - run: ad4m serve &
 
