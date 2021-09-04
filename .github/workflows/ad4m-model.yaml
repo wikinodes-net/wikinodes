@@ -40,14 +40,12 @@ jobs:
       - run: cat ~/.config/nix/nix.conf
 
       # - run: npm install -g @perspect3vism/ad4m-cli@0.0.2
-      - run: |
-          set -x
-          git clone https://github.com/perspect3vism/ad4m-cli.git
-          cd ad4m-cli
-          git fetch origin pull/2/head:fix-symlink   # https://github.com/perspect3vism/ad4m-cli/pull/2
-          git checkout fix-symlink
-          npm install
-          npm run run serve &
+      - run: set -x
+      - run: git clone https://github.com/perspect3vism/ad4m-cli.git
+      - run: cd ad4m-cli && git fetch origin pull/2/head:fix-symlink # https://github.com/perspect3vism/ad4m-cli/pull/2
+      - run: cd ad4m-cli && git checkout fix-symlink
+      - run: cd ad4m-cli && npm install
+      - run: cd ad4m-cli && npm run run serve &
 
       - run: npm ci # nmp install for CI env
       - run: npm run test:ci
