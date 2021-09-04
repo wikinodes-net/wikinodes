@@ -27,6 +27,21 @@ describe("Ad4mModel", () => {
     });
   });
 
+  describe(".find(...)", () => {
+    it("finds by address", async () => {
+      class Cat extends Ad4mModel {}
+      const attrs = { type: "Cat", fur: "grey", eyes: "blue" };
+
+      const address = await client.expression.create(
+        attrs,
+        Ad4m.defaultExpressionLanguage.address
+      );
+
+      const cat = await Cat.find(address);
+      expect(JSON.parse(cat.data)).toMatchObject(attrs);
+    });
+  });
+
   // describe(".all(...)", () => {
   //   it("finds all instances of a model", async () => {
   //     class Dog extends Ad4mModel {}
@@ -42,19 +57,6 @@ describe("Ad4mModel", () => {
 
   //     expect(dogs).toBe([dog1, dog2]);
   //     expect(cats).toBe([cat1, cat2]);
-  //   });
-  // });
-
-  // describe(".find(...)", () => {
-  //   it("finds by address", async () => {
-  //     class Funder extends Ad4mModel {}
-
-  //     const address = await client.expression.create(
-  //       { foo: "bar", baz: "qux" },
-  //       Ad4m.defaultExpressionLanguage.address
-  //     );
-
-  //     const funders = Funder.find({ address });
   //   });
   // });
 
