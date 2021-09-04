@@ -1,20 +1,18 @@
-import {FundingEvent} from '../../../models/FundingEvent'
+import { FundingEvent } from '../../../models/FundingEvent'
 
-export async function get({ params }): Promise<{ body }> {
+export async function get({ params }: { params: any }): Promise<object> {
   const { address } = params
 
-  const fundingEvent = FundingEvent.find({ address })
+  const fundingEvent = await FundingEvent.find({ address })
 
   if (fundingEvent) {
     return {
-      body: {
-        fundingEvent.asJson(),
-      },
+      body: fundingEvent.asJson(),
     }
   } else {
     return {
-      headers: { Location: '/tree-of-life' },
-      status: 302,
+      // headers: {  },
+      status: 404,
     }
   }
 }
