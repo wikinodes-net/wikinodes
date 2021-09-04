@@ -1,9 +1,12 @@
 import { Link, LinkQuery, PerspectiveHandle } from "@perspect3vism/ad4m";
+import { map } from "lodash";
 
 const PREDICATE_HAS_INSTANCE = "HAS_INSTANCE";
+const PREDICATE_HAS_ASSOCIATED = "HAS_ASSOCIATED";
 
 const TYPE_MODEL_CLASS = "MODEL_CLASS";
 const TYPE_MODEL_INSTANCE = "MODEL_INSTANCE";
+
 export class Ad4mModel {
   static client;
   private client;
@@ -24,12 +27,14 @@ export class Ad4mModel {
   static async create(attrs: object) {
     const model = new this(); // instance of inheriting class
     await model.createExpression(attrs);
-    // model.expressionAddress = await this.client.expression.create(
-    //   attrs,
-    //   Ad4mModel.defaultExpressionLanguage.address
-    // );
+    await model.linkModelToInstance();
+    return model;
+  }
 
-    // await model.linkModelToInstance();
+  static fromExpressionAddress(expressionAddress: string) {
+    // await this.find(expressionAddress); // validates that its found
+    const model = new this();
+    model.expressionAddress = expressionAddress;
     return model;
   }
 
@@ -65,7 +70,7 @@ export class Ad4mModel {
     await this.client.perspective.addLink(
       Ad4mModel.defaultPerspective.uuid,
       new Link({
-        source: await modelClass.getClassExpression(),
+        source: await modelClass.getClassExpressionAddress(),
         predicate: PREDICATE_HAS_INSTANCE,
         target: this.expressionAddress,
       })
@@ -73,9 +78,8 @@ export class Ad4mModel {
   }
 
   // Get the expression for the model *class*
-  protected static async getClassExpression() {
-    if (this.classExpressionAddress) return this.classExpressionAddress;
-
+  protected static async getClassExpressionAddress(): Promise<string> {
+    if (this.classExpressionAddress) return this.classExpressionAddress; // TODO wrap in promise?
     const modelClassName = this.name;
     this.classExpressionAddress = await this.createExpression({
       type: TYPE_MODEL_CLASS,
@@ -85,12 +89,8 @@ export class Ad4mModel {
   }
 
   protected async create(otherModelClass: any, otherModelAttrs: object) {
-    if (!Ad4mModel.hasManyAssociations[this.constructor.name]) {
-      throw new Error(
-        `Missing association: ${this.constructor.name} hasMany ${otherModelClass.name}`
-      );
-    }
     if (
+      !Ad4mModel.hasManyAssociations[this.constructor.name] ||
       !Ad4mModel.hasManyAssociations[this.constructor.name].has(
         otherModelClass.name
       )
@@ -106,7 +106,7 @@ export class Ad4mModel {
       Ad4mModel.defaultPerspective.uuid,
       new Link({
         source: this.expressionAddress,
-        predicate: "has",
+        predicate: PREDICATE_HAS_ASSOCIATED,
         target: otherModel.expressionAddress,
       })
     );
@@ -123,19 +123,34 @@ export class Ad4mModel {
 
   async find(
     model: Ad4mModel,
-    options: { queryParams?: object; perspective?: PerspectiveHandle } = {}
+    options: {
+      // queryParams?: object;
+      perspective?: PerspectiveHandle;
+    } = {}
   ) {
-    const queryParams = options.queryParams ? options.queryParams : {};
+    const modelClass: any = this.constructor;
+
+    // const queryParams = options.queryParams ? options.queryParams : {};
     const perspective: PerspectiveHandle = options.perspective
       ? options.perspective
       : Ad4mModel.defaultPerspective;
     // TODO assert perspective
     // TODO merge subject = self
     // TODO limit target to model
-    return await this.client.perspective.queryLinks(
+    const links = await this.client.perspective.queryLinks(
       perspective.uuid,
-      new LinkQuery(queryParams)
+      new LinkQuery({
+        source: this.expressionAddress,
+        predicate: PREDICATE_HAS_ASSOCIATED,
+      })
     );
+
+    const instanceAddresses = map(links, (link) => link.data.target);
+    const instances = map(instanceAddresses, (instanceAddress) =>
+      modelClass.fromExpressionAddress(instanceAddress)
+    );
+
+    return instances;
   }
 
   static async find(address) {
@@ -143,6 +158,8 @@ export class Ad4mModel {
   }
 
   static async all(options: { perspective?: PerspectiveHandle } = {}) {
+    const modelClass: any = this;
+
     const perspective: PerspectiveHandle = options.perspective
       ? options.perspective
       : Ad4mModel.defaultPerspective;
@@ -151,11 +168,21 @@ export class Ad4mModel {
     const links = await this.client.perspective.queryLinks(
       perspective.uuid,
       new LinkQuery({
-        source: this.constructor.name,
+        source: await modelClass.getClassExpressionAddress(),
         predicate: PREDICATE_HAS_INSTANCE,
       })
     );
 
-    return links;
+    const instanceAddresses = map(links, (link) => link.data.target);
+    const instances = map(instanceAddresses, (instanceAddress) =>
+      modelClass.fromExpressionAddress(instanceAddress)
+    );
+
+    return instances;
+
+    // "data": Object {
+    //   "predicate": "HAS_INSTANCE",
+    //   "source": "Qmd6AZzLjfGWNAqWLGTGy354JC1bK26XNf7rTEEsJfv7Fe://QmdmtUqnfF5LUsE9qdNGK1NvWKpwL18VdP8rdbmN6UZqD7",
+    //   "target": "Qmd6AZzLjfGWNAqWLGTGy354JC1bK26XNf7rTEEsJfv7Fe://QmYXb8qwj4gNySVaqmnoKPm78HE9wEkJZbnxAT32cUZmbq",
   }
 }

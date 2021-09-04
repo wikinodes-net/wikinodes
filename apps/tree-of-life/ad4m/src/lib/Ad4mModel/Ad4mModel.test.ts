@@ -36,27 +36,52 @@ describe("Ad4mModel", () => {
         attrs,
         Ad4m.defaultExpressionLanguage.address
       );
-
+      // console.log(address);
       const cat = await Cat.find(address);
       expect(JSON.parse(cat.data)).toMatchObject(attrs);
     });
+
+    // it("returns null if none found", async () => {
+    //   class Cat extends Ad4mModel {}
+    //   const notReally = await Cat.find(
+    //     "Qmd6AZzLjfGWNAqWLGTGy354JC1bK26XNf7rTEEsJfv7Fe://QmVrvDQSoU4PMpZfjbaHREY1DbBo54zJHuKUKJ18P9cccc"
+    //   );
+    //   expect(notReally).toBeNull();
+    // });
   });
 
-  // describe(".all(...)", () => {
-  //   it("finds all instances of a model", async () => {
-  //     class Dog extends Ad4mModel {}
+  describe(".all(...)", () => {
+    it("finds all instances of a model", async () => {
+      class Dog extends Ad4mModel {}
+      class Cat extends Ad4mModel {}
+
+      const dog1address = (await Dog.create({})).expressionAddress;
+      const dog2address = (await Dog.create({})).expressionAddress;
+      const cat1address = (await Cat.create({})).expressionAddress;
+      const cat2address = (await Cat.create({})).expressionAddress;
+
+      const dogs = (await Dog.all()).map((dog) => dog.expressionAddress);
+      const cats = (await Cat.all()).map((cat) => cat.expressionAddress);
+
+      expect(dogs).toEqual(expect.arrayContaining([dog1address, dog2address]));
+      expect(cats).toEqual(expect.arrayContaining([cat1address, cat2address]));
+    });
+  });
+
+  // describe(".getClassExpressionAddress()", () => {
+  //   it("returns the same result when called multiple times for the same class", async () => {
   //     class Cat extends Ad4mModel {}
+  //     const catClassExpressionAddress1 = await Cat.getClassExpressionAddress();
+  //     const catClassExpressionAddress2 = await Cat.getClassExpressionAddress();
+  //     expect(catClassExpressionAddress1).toEqual(catClassExpressionAddress2);
+  //   });
 
-  //     const dog1 = await Dog.create({});
-  //     const dog2 = await Dog.create({});
-  //     const cat1 = await Cat.create({});
-  //     const cat2 = await Cat.create({});
-
-  //     const dogs: Array<Ad4mModel> = await Dog.all();
-  //     const cats: Array<Ad4mModel> = await Cat.all();
-
-  //     expect(dogs).toBe([dog1, dog2]);
-  //     expect(cats).toBe([cat1, cat2]);
+  //   it("returns different addresses for different classes", async () => {
+  //     class Cat extends Ad4mModel {}
+  //     class Dog extends Ad4mModel {}
+  //     const catClassExpressionAddress = await Cat.getClassExpressionAddress();
+  //     const dogClassExpressionAddress = await Dog.getClassExpressionAddress();
+  //     expect(catClassExpressionAddress).not.toEqual(dogClassExpressionAddress);
   //   });
   // });
 
@@ -86,14 +111,12 @@ describe("Ad4mModel", () => {
         })
       );
 
-      const links = await musk.find(FundingEvent);
+      const fundingEvents = await musk.find(FundingEvent);
 
-      expect(links).toHaveLength(1);
-      expect(links[0]["data"]).toMatchObject({
-        source: musk.expressionAddress,
-        predicate: "has",
-        target: fundingEvent.expressionAddress,
-      });
+      expect(fundingEvents).toHaveLength(1);
+      expect(fundingEvents[0].expressionAddress).toEqual(
+        fundingEvent.expressionAddress
+      );
     });
   });
 });
