@@ -16,14 +16,16 @@ describe("Ad4mModel", () => {
 
   describe(".find(...)", () => {
     it("finds by address", async () => {
-      class Funder extends Ad4mModel {}
+      class Cat extends Ad4mModel {}
+      const attrs = { type: "Cat", fur: "grey", eyes: "blue" };
 
       const address = await client.expression.create(
-        { type: "Funder", foo: "bar", baz: "qux" },
+        attrs,
         Ad4m.defaultExpressionLanguage.address
       );
 
-      const funders = Funder.find({ address });
+      const cat = await Cat.find(address);
+      expect(JSON.parse(cat.data)).toMatchObject(attrs);
     });
   });
 

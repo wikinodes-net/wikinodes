@@ -79,11 +79,11 @@ export class Ad4mModel {
     );
   }
 
-  static async find(address) {
+  static async find(address: string) {
     return await this.client.expression.get(address);
   }
 
-  static async all() {
-    return await this.client.expression.get(address);
-  }
+  // static async all() {
+  //   return await this.client.expression.get(address);
+  // }
 }
