@@ -14,8 +14,8 @@
     "dev:full": "npm run ad4m-executor && npm run dev",
     "clean": "rm -rf ~/Library/Application\\ Support/ad4m",
     "sort": "sort-package-json",
-    "test": "jest",
-    "test:ci": "jest --ci",
+    "test": "jest --forceExit --maxWorkers 1 --maxConcurrency 1",
+    "test:ci": "npm run test -- --ci",
     "test:watch": "jest --watch"
   },
   "dependencies": {
