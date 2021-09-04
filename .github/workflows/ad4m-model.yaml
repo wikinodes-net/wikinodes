@@ -39,9 +39,6 @@ jobs:
 
       - run: cat ~/.config/nix/nix.conf
 
-      - name: Prepare Nix environment
-        run: nix-shell --command "echo Completed"
-
       - run: npm install -g @perspect3vism/ad4m-cli
       - run: ad4m serve &
 
