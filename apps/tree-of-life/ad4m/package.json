@@ -16,7 +16,8 @@
     "sort": "sort-package-json",
     "test": "jest --forceExit --maxWorkers 1 --maxConcurrency 1",
     "test:ci": "npm run test -- --ci",
-    "test:watch": "jest --watch"
+    "test:watch": "nodemon --ext ts --exec 'npm test'",
+    "test:watch:name": "nodemon --ext ts --exec 'npm test -- --testNamePattern $T'"
   },
   "dependencies": {
     "@apollo/client": "3.3.20",
@@ -27,6 +28,7 @@
     "@types/jest": "^27.0.1",
     "@types/mocha": "^9.0.0",
     "jest": "^27.1.0",
+    "nodemon": "^2.0.12",
     "sort-package-json": "^1.50.0",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
