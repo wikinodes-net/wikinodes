@@ -60,40 +60,40 @@ describe("Ad4mModel", () => {
   //   });
   // });
 
-  // describe('with "has many" association', () => {
-  //   it("scratchpad", async () => {
-  //     class Funder extends Ad4mModel {}
-  //     Funder.hasMany("FundingEvent");
-  //     class FundingEvent extends Ad4mModel {}
+  describe('with "has many" association', () => {
+    it("scratchpad", async () => {
+      class Funder extends Ad4mModel {}
+      Funder.hasMany("FundingEvent");
+      class FundingEvent extends Ad4mModel {}
 
-  //     const musk: any = await Funder.create({ name: "Musk" });
-  //     const muskExpression = await client.expression.get(
-  //       musk.expressionAddress
-  //     );
-  //     expect(muskExpression.data).toBe(JSON.stringify({ name: "Musk" }));
+      const musk: any = await Funder.create({ name: "Musk" });
+      const muskExpression = await client.expression.get(
+        musk.expressionAddress
+      );
+      expect(muskExpression.data).toBe(JSON.stringify({ name: "Musk" }));
 
-  //     const fundingEvent = await musk.create(FundingEvent, {
-  //       name: "Musk Foundation 2022",
-  //       totalBudget: 22_000_000,
-  //     });
-  //     const fundingEventExpression = await client.expression.get(
-  //       fundingEvent.expressionAddress
-  //     );
-  //     expect(fundingEventExpression.data).toBe(
-  //       JSON.stringify({
-  //         name: "Musk Foundation 2022",
-  //         totalBudget: 22_000_000,
-  //       })
-  //     );
+      const fundingEvent = await musk.create(FundingEvent, {
+        name: "Musk Foundation 2022",
+        totalBudget: 22_000_000,
+      });
+      const fundingEventExpression = await client.expression.get(
+        fundingEvent.expressionAddress
+      );
+      expect(fundingEventExpression.data).toBe(
+        JSON.stringify({
+          name: "Musk Foundation 2022",
+          totalBudget: 22_000_000,
+        })
+      );
 
-  //     const links = await musk.find(FundingEvent);
+      const links = await musk.find(FundingEvent);
 
-  //     expect(links).toHaveLength(1);
-  //     expect(links[0]["data"]).toMatchObject({
-  //       source: musk.expressionAddress,
-  //       predicate: "has",
-  //       target: fundingEvent.expressionAddress,
-  //     });
-  //   });
-  // });
+      expect(links).toHaveLength(1);
+      expect(links[0]["data"]).toMatchObject({
+        source: musk.expressionAddress,
+        predicate: "has",
+        target: fundingEvent.expressionAddress,
+      });
+    });
+  });
 });
