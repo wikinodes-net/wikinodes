@@ -39,8 +39,12 @@ jobs:
 
       - run: cat ~/.config/nix/nix.conf
 
-      - run: npm install -g @perspect3vism/ad4m-cli
-      - run: ad4m serve &
+      # - run: npm install -g @perspect3vism/ad4m-cli@0.0.2
+      - run: |
+          git clone https://github.com/perspect3vism/ad4m-cli.git
+          cd ad4m-cli
+          checkout 199982cae1bb4987a58b48fc88938f113e041994  # https://github.com/perspect3vism/ad4m-cli/pull/2
+          npm run run serve &
 
       - run: npm ci # nmp install for CI env
       - run: npm run test:ci
